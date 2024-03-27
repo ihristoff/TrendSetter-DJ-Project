@@ -54,8 +54,10 @@ class DetailsProfileView( views.DetailView):
 
 class UpdateProfileView(views.UpdateView):
     queryset = Profile.objects.all()
-    fields = ['trading_from', 'profile_image']
+
+    fields = ['trading_from', 'profile_image', 'date_of_birth']
     template_name = 'accounts/update-profile.html'
+
 
 
     def get_success_url(self):
@@ -63,5 +65,14 @@ class UpdateProfileView(views.UpdateView):
 
 
 class DeleteProfileView(views.DeleteView):
-    queryset = Profile.objects.all()
+    model=UserModel
     template_name = 'accounts/delete-profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get the associated Profile object and pass it to the context
+        context['profile'] = Profile.objects.get(user=self.request.user)
+        # context['form'] = ProfileForm(instance=context['profile'])
+        return context
+    def get_success_url(self):
+        return reverse('index')

@@ -4,7 +4,7 @@
 {% block content %}
 
     <div class="container">
-    <form action = {% url 'profile delete' pk=request.user.pk %} >
+    <form action = "{% url 'profile delete' pk=request.user.pk %}" method = 'post' >
 {#        <form action = {% url 'login' %}?next={{ next }}   method='post'         #}
         
         
@@ -20,7 +20,7 @@
 
              </div>
               <div class="form-group col-md-4 mb-0">
-{#                  {{ profile.user.password2|as_crispy_field }}#}
+                  {{ profile.trading_from }}
              </div>
          </div>
         {% csrf_token %}

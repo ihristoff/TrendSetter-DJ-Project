@@ -14,18 +14,19 @@
 {#                 {{ profile.user|as_crispy_field}}#}
                     <p>{{  object.user.email }}</p> 
                  
-                 <p>Date of birth: {{ object.date_of_birth }}</p> 
+                 <p>Date of birth: {{ object.date_of_birth|date:"Y-m-d"}}</p> 
                  <p>Trading from: {{ object.trading_from }}</p> 
             </div>
          
 {#        TODO does not visualize ??! #}
-         {% if object.date_of_birth %}
-             <div class="form-group col-md-4 mb-0">
-                <p>{{ object.date_of_birth }}</p> 
-{#                  {{ profile.user.password|as_crispy_field }}#}
+     
+ 
                 
-             </div>
-          {% endif %}
+                 {% if object.date_of_birth %}
+            <p>Date of birth: {{ object.date_of_birth|date:"Y-m-d" }}</p>
+         {% else %}
+                <p>Date of birth: Not provided</p>
+         {% endif %}
              {% if object.profile_image %}
 {#              <div class="form-group col-md-4 mb-0">#}
 {#                  {{ profile.user.password2|as_crispy_field }}#}

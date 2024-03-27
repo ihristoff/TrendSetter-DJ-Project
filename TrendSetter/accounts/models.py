@@ -46,7 +46,7 @@ class Profile(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
-    date_of_birth = models.DateTimeField(null=True, blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
     # profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
     profile_image = models.URLField(null=True, blank=True)
     trading_from = models.CharField(max_length=50, null=True, blank=True)
