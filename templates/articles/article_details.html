@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="{% url 'article details' article_slug=object.slug %}"  method="post">
+    <h2>{{ object.title }}</h2>
+    <img width="500" src="{{ object.image.url }}" alt="{{ object.title }}">
+    <p>{{ object.description }}</p>
+    
+    <button type="submit">Update</button>
+    {% csrf_token %}
+    </form>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form method="get" action="{% url 'education articles' %}">
+        <input type="text" name="q" placeholder="Search by title" value="{{ request.GET.q }}">
+        <input type="submit" value="Search">
+    </form>
+    <h2>Education Articles</h2>
+    {% for article in articles %}
+        <p>{{ article.slug }}</p>
+        <h3><a href="{% url 'article details' article.slug  %}">{{ article.title }}</a></h3>
+{#        <a href="{% url 'jobseeker details' jobseeker.pk %}">{{ jobseeker.first_name}} {{ jobseeker.last_name }}</a>#}
+        <img src="{{ article.image.url }}" alt="{{ article.title }}" width="200">
+        <p>{{ article.description|truncatechars:200 }}</p>
+    {% endfor %}
+    
+   
+{% endblock %}
