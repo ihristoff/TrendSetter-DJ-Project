@@ -12,17 +12,17 @@ from django.urls import path
 
 from django.urls import path
 from .views import (
-    EducationArticleCreateView,
-    EducationArticleUpdateView,
-    EducationArticleDetailView,
+    EducationalArticleCreateView,
+    EducationalArticleUpdateView,
+    EducationalArticleDetailView,
     AllArticlesView,
 )
 
 urlpatterns = [
     # Other URL patterns
-    path('create-article/', EducationArticleCreateView.as_view(), name='create article'),
-    path('update-article/<slug:article_slug>/', EducationArticleUpdateView.as_view(), name='update article'),
-    path('article/<slug:article_slug>/', EducationArticleDetailView.as_view(), name='article details'),
+    path('create-article/', EducationalArticleCreateView.as_view(), name='create article'),
+    path('update-article/<slug:article_slug>/', EducationalArticleUpdateView.as_view(), name='update article'),
+    path('article/<slug:article_slug>/', EducationalArticleDetailView.as_view(), name='article details'),
   #  path('articles/<int:pk>/', EducationArticleListView.as_view(), name='article list'),
     path('education/', AllArticlesView.as_view(), name='education articles'),
 ]

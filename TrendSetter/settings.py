@@ -43,12 +43,17 @@ INSTALLED_APPS = [
     "TrendSetter.main",
     'crispy_forms',
     "crispy_bootstrap5",
-    "TrendSetter.articles.apps.ArticlesConfig"
+    'ckeditor',
+
+    "django.contrib.humanize",
+    "TrendSetter.articles.apps.ArticlesConfig",
+    "TrendSetter.trade_ideas"
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

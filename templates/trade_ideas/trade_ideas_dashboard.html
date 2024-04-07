@@ -1,0 +1,70 @@
+{#{% extends "base.html" %}#}
+{#{% load humanize %}#}
+{#{% block content %}#}
+    <style>
+
+        body {
+            background: orange;
+        }
+
+        .all-articles {
+             width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 5vh 10vw;
+
+  gap: 4vw;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+        }
+
+        li {padding: 10px;
+
+        }
+    </style>
+    
+    
+    {% load humanize %}
+{#    <form method="get" action="{% url 'trade ideas dashboard' %}">#}
+{#        <input type="text" name="q" placeholder="Search by title" value="{{ request.GET.q }}">#}
+{#        <input type="submit" value="Search">#}
+{#    </form>#}
+    <h2>IDEAS!</h2>
+    <h5>Object contains {{ ideas }}</h5>
+    <div class="all-articles">
+    {% for idea in ideas %}
+        {#        <p>{{ article.slug }}</p>#}
+        {#        <h3><a href="{% url 'article details' article.slug  %}">{{ article.title }}</a></h3>#}
+{#        <a href="{% url 'jobseeker details' jobseeker.pk %}">{{ jobseeker.first_name}} {{ jobseeker.last_name }}</a>#}
+        {#        <img src="{{ article.image.url }}" alt="{{ article.title }}" width="200">#}
+        {#        <p>{{ article.description|truncatechars:200 }}</p>#}
+
+
+
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="{{ idea.idea_image.url }}" alt="{{ idea.title }}">
+            <div class="card-body">
+{#                <h5 class="card-title"><a href="{% url 'trade idea details' idea.pk %}">{{ idea.title }}</a></h5>#}
+                <p class="card-text">{{ idea.description|truncatechars:200 }}...</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Category</li>
+                <li class="list-group-item">
+
+
+                    <small class="text-muted">Published {{ idea.created_at|naturaltime }}</small>
+                </li>
+                {#    <li class="list-group-item">Vestibulum at eros</li>#}
+            </ul>
+{#            <div class="card-body">#}
+{#                <a href="#" class="card-link">Read More</a>#}
+{#                <a href="#" class="card-link">See Gallery</a>#}
+{#            </div>#}
+        </div>
+        
+    {% endfor %}
+    </div>
+   
+{#{% endblock %}#}

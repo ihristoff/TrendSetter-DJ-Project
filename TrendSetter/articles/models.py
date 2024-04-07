@@ -4,14 +4,21 @@ from django.db import models
 from django.db import models
 from django.utils.text import slugify
 
+from TrendSetter.articles.validators import image_size_validator
+from ckeditor.fields import RichTextField
+
 UserModel = get_user_model()
 
 
-class EducationArticle(models.Model):
+class EducationalArticle(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING, related_name='education_articles')
     title = models.CharField(max_length=255, unique=True,)
-    image = models.ImageField(upload_to='education_articles/')
-    description = models.TextField()
+    image = models.ImageField(
+        upload_to='education_articles/',
+        validators=(image_size_validator,),
+    )
+    # category = models.CharField(max_length=25, )
+    description = RichTextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -31,7 +38,7 @@ class EducationArticle(models.Model):
     def save(self, *args, **kwargs):
         # super().save(*args, **kwargs)
 
-        if not self.slug:  # slugify("My name") -> "My-name"
+        if not self.slug:
             self.slug = slugify(f"{self.title}")
 
         super().save(*args, **kwargs)

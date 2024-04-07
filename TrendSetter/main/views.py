@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views import generic as views
 
+from TrendSetter.trade_ideas.models import TradeIdea
+
 
 # Create your views here.
 # def index(request):
@@ -10,9 +12,12 @@ from django.views import generic as views
 
 class IndexView(views.TemplateView):
     template_name = 'home.html'
+
     def get_context_data(self, **kwargs):
         context = super(). get_context_data(**kwargs)
+        context['all_ideas'] = TradeIdea.objects.all()
         context['hide additional nav items'] = True
+
 
         return context
 

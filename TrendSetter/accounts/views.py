@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.shortcuts import render
 from django.views import generic as views
-from django.contrib.auth import views as auth_views, get_user_model, login
+from django.contrib.auth import views as auth_views, get_user_model, login, authenticate
 from django.contrib.auth import forms as auth_forms
 
 from django.urls import reverse_lazy, reverse
@@ -24,7 +24,8 @@ class LoginUserView(auth_views.LoginView):
 
 
 class LogoutUserView(auth_views.LogoutView):
-    template_name = 'accounts/logout-page.html'
+    pass
+    # template_name = 'accounts/logout-page.html'
     # we do not need 'success_url'  if we are using the 'next' approach in the form on the login-page
   #  success_url = reverse_lazy('index')
 
@@ -37,11 +38,20 @@ class RegisterUserView(views.CreateView):
     #code for auto login
     def form_valid(self, form):
         # form valid will call 'save'
-        result = super().form_valid(form)
-        login(self.request, form.instance)
+        result = super().form_valid(form)   #this will create our user.   super() is reference to Parent class =CreateView
+        login(self.request, form.instance)   #will it work with self.object instead of self.instance
 
         return result
 
+
+    # def from_valid(self,form):
+    #     user_data = form.cleaned_data
+    #     user=authenticate(
+    #         username=user_data['username'],
+    #         password=user_data['password1']
+    #     )
+    #     login(self.request, user)
+    #     return super().form_valid(form)
 
 
 

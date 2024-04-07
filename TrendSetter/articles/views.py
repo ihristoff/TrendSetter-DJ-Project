@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.core import exceptions
 
@@ -7,18 +8,26 @@ from django.core import exceptions
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, UpdateView, DetailView
-from .forms import EducationArticleForm
-from .models import EducationArticle
+from .forms import EducationalArticleForm
+from .models import EducationalArticle
 
 UserModel = get_user_model()
 
-class EducationArticleCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
-    model = EducationArticle
-    form_class = EducationArticleForm
+class EducationalArticleCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = EducationalArticle
+    form_class = EducationalArticleForm
     template_name = 'articles/article_create.html'
 
     def test_func(self):
         return self.request.user.is_staff
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["title"].widget.attrs["placeholder"] = "Title"
+        form.fields["description"].widget.attrs["placeholder"] = "Description"
+        form.fields["image"].widget.attrs["placeholder"] = "Upload Image"
+
+        return form
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -27,9 +36,9 @@ class EducationArticleCreateView(LoginRequiredMixin, UserPassesTestMixin, Create
     def get_success_url(self):
         return reverse_lazy('article details', kwargs={'article_slug': self.object.slug})
 
-class EducationArticleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = EducationArticle
-    form_class = EducationArticleForm
+class EducationalArticleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = EducationalArticle
+    form_class = EducationalArticleForm
     template_name = 'articles/article_update.html'
     success_url = reverse_lazy('article_list')
 
@@ -62,8 +71,8 @@ class EducationArticleUpdateView(LoginRequiredMixin, UserPassesTestMixin, Update
 # if we need some model to have 'user' then simply inherit instead user=ForeignKey(UserModel)
 
 
-class EducationArticleDetailView(LoginRequiredMixin, DetailView):
-    model = EducationArticle
+class EducationalArticleDetailView(LoginRequiredMixin, DetailView):
+    model = EducationalArticle
     template_name = 'articles/article_details.html'
 
     context_object_name = 'article'
@@ -77,11 +86,11 @@ class EducationArticleDetailView(LoginRequiredMixin, DetailView):
     #chatgpt learned me go override get_object method. no needed when working with pk
     def get_object(self, queryset=None):
         slug = self.kwargs.get('article_slug')
-        return EducationArticle.objects.get(slug=slug)
+        return EducationalArticle.objects.get(slug=slug)
 
 # class EducationArticleListView(DetailView):
 #     model = UserModel
-#     template_name = 'articles/article_list.html'
+#     template_name = 'articles/article_dashboard.html'
 #
 #     def get_context_data(self, **kwargs):
 #         context = super().get_context_data(**kwargs)
@@ -91,23 +100,30 @@ class EducationArticleDetailView(LoginRequiredMixin, DetailView):
 
 
 class AllArticlesView(ListView):
-    model = EducationArticle
-    template_name = 'articles/article_list.html'
+    # model = EducationArticle
+    queryset = EducationalArticle.objects.all()
+    template_name = 'articles/article_dashboard.html'
     context_object_name = 'articles'
     ordering = ['-created_at']  # Display articles in descending order of creation date
 
+    paginate_by = 2
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        all_articles = EducationArticle.objects.all().order_by('-created_at')
-
+        all_articles = EducationalArticle.objects.all().order_by('-created_at')
+        # articles= context['articles']
 
         search_query = self.request.GET.get('q')
         if search_query:
-            context['articles'] = all_articles.filter(title__icontains=search_query)[:5]
+            context['articles'] = all_articles.filter(title__icontains=search_query)
         else:
-            context['articles'] = all_articles[:5]  # Display latest 5 articles
+            context['articles'] = all_articles
 
-        context['all_articles'] = all_articles
+        paginator = Paginator(context['articles'], self.paginate_by)
+        page = self.request.GET.get('page')
+        context['articles'] = paginator.get_page(page)
+
+        # context['all_articles'] = all_articles
         return context
+
 

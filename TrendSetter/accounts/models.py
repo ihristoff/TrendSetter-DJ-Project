@@ -50,6 +50,11 @@ class Profile(models.Model):
     # profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
     profile_image = models.URLField(null=True, blank=True)
     trading_from = models.CharField(max_length=50, null=True, blank=True)
+ #    gender = models.Choices()
+ # username =
+
+ # idea = models.ForeighKey(Idea)
+ # comment = models.ForeignKey(Comment)
  # # Add any additional fields related to the user profile
  #    def __str__(self):
  #        return self.user.email

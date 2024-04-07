@@ -1,0 +1,89 @@
+body {
+
+    background-color: black;
+    background-image: none;
+}
+
+
+.register {
+
+    background-color: #131722;
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px lightgreen;
+
+    display: flex;
+    font-size: 14px;
+    flex-direction: column;
+    width: 360px;
+
+    overflow: hidden;
+    padding: 1rem;
+    color: white;
+    position: absolute;
+    top:50%;
+    left:50%;
+     transform: translate(-50%, -50%);
+
+}
+
+/*.form-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form field styling */
+.form-group {
+    margin-bottom: 0.75rem;
+}
+
+/* Label styling */
+.form-group label {
+    display: block;
+    font-weight: bold;
+
+    margin-bottom: 5px;
+}
+
+/* Input field styling */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group select {
+    width: 100%;
+    padding: 0.5rem;
+    /*border: 1px solid #ccc;*/
+    border-radius: 3px;
+
+    align-content: center;
+}
+
+/* Button styling */
+.btn-primary {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: green;
+    color: #fff;
+    border: none;
+    width: 100%;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.btn-primary:hover {
+    background-color: darkgreen;
+}
+
+
+a {
+font-size: 1rem;
+    color: green;
+}
+

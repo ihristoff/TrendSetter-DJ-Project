@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from TrendSetter.articles.models import EducationArticle
+from TrendSetter.articles.models import EducationalArticle
 
 
 # Register your models here.
-@admin.register(EducationArticle)
+@admin.register(EducationalArticle)
 class EducationArticleAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug')

@@ -12,6 +12,8 @@ class AccountUserCreationForm(auth_forms.UserCreationForm):
         fields = (UserModel.USERNAME_FIELD,)
         # fields = ('email', 'password1', 'password2')
 
+
+
 class AccountUserChangeForm(auth_forms.UserChangeForm):
     class Meta(auth_forms.UserChangeForm.Meta):
         model = UserModel

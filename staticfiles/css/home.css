@@ -1,0 +1,68 @@
+/*{%load static %}*/
+/*body {*/
+/*          background-image: {% static "images/openart-e3b81b435459467ead2de190b4d5e7cd.png" %} !important;*/
+/*        !*background-color: #0056b3!important;*!*/
+/*      }*/
+
+
+.main {
+
+    display: flex;
+    flex-direction: column;
+
+    margin: 50px;
+    border: cornflowerblue;
+    justify-content: space-between;
+    align-items: center;
+    size: 6rem;
+
+}
+
+.item {
+    flex: 1 1 1; /* Equal width */
+    /*border: 1px solid #ccc; !* Border for visualization *!*/
+    padding: 20px; /* Padding for spacing */
+    box-sizing: border-box; /* Include border and padding in width */
+    color: white;
+    width: 100%;
+    size: 6rem;
+}
+
+.left {
+    size: 6rem;
+
+}
+.right {
+size: 6rem;
+    text-align: end;
+    align-items: flex-end;
+}
+
+
+.center {
+    size: 6rem;
+    display: flex;
+    justify-content: center;
+
+}
+
+.item h1 {
+    font-size: 60px;
+    font-family: Roboto;
+}
+
+
+
+
+/*.center-container {*/
+/*    display: flex*/
+/*    position: absolute;*/
+/*    top: 30%;*/
+/*    left: 30%;*/
+/*    transform: translate(-50%, -50%);*/
+/*    background-color: #f0f0f0; !* Just for demonstration *!*/
+/*    padding: 20px;*/
+/*    border-radius: 8px;*/
+/*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); !* Optional: Add a box shadow for better visual *!*/
+/*}*/
+

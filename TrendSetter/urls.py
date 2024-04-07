@@ -26,6 +26,8 @@ urlpatterns = [
     path('', include('TrendSetter.main.urls')),
     path('accounts/', include('TrendSetter.accounts.urls')),
     path('articles/', include('TrendSetter.articles.urls')),
+    path('trade_ideas/', include('TrendSetter.trade_ideas.urls')),
+    # path('ratings/', include('TrendSetter.ratings.urls')),
 
 
 
