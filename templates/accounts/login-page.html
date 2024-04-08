@@ -9,7 +9,7 @@
 <div class="register">
 
     <h2>Sign in to your account</h2>
-    <form action={% url 'login' %}?next={{ next }} method='post'>
+    <form action="{% url 'login' %}" method="post">
         <div class="form-row">
              <div class="form-group col-md-4 mb-0">
                  {{ form.username|as_crispy_field}}
@@ -20,6 +20,7 @@
          </div>
         <button class="btn-primary" type="submit">Login</button>
         <p>Don't have an account? <a href="{% url 'register' %}">Join here </a></p>
+{#        <input type="hidden" value="{{next}}" name="next">#}
         {% csrf_token %}
     </form>
 </div>

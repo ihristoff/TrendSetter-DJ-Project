@@ -15,7 +15,7 @@ UserModel = get_user_model()
 class LoginUserView(auth_views.LoginView):
     template_name = 'accounts/login-page.html'
     success_url = reverse_lazy('index')
-
+    # redirect_field_name = 'next'
     #default will send it to accounts/profile so we override it
     def get_success_url(self):
         if self.success_url:

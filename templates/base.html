@@ -14,10 +14,11 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <style>
         body {
-            background-image: 
+            {#background-image: #}
                 {#linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent),#}
                 {#linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent),#}
-                url('{% static "images/openart-e3b81b435459467ead2de190b4d5e7cd.png" %}') ;
+            {#    url('{% static "images/openart-e3b81b435459467ead2de190b4d5e7cd.png" %}') ;#}
+            background-color: cornflowerblue;
             z-index: -10;
             
         }
@@ -66,7 +67,7 @@
                     {% if request.user.profile.profile_image %}
                         <img src="{{ request.user.profile.profile_image }}" alt="Profile Picture" class="profile-img" id="profileBtn">
                     {% else %}
-                            <img src="{% static 'images/shirt.jpg' %}" alt="Profile Picture" class="profile-img" id="profileBtn">
+                            <img src="{% static 'images/anonymous-user.webp' %}" alt="Profile Picture" class="profile-img" id="profileBtn">
                     
                     {% endif %}    
                         <div class="dropdown-menu" id="dropdownMenu">

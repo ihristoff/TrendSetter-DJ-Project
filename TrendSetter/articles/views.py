@@ -1,15 +1,17 @@
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.db.models import Avg
+from django.shortcuts import render, redirect
 from django.core import exceptions
 
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, UpdateView, DetailView
-from .forms import EducationalArticleForm
-from .models import EducationalArticle
+from .forms import EducationalArticleForm, CommentForm
+from .models import EducationalArticle, Comment
 
 UserModel = get_user_model()
 
@@ -19,7 +21,7 @@ class EducationalArticleCreateView(LoginRequiredMixin, UserPassesTestMixin, Crea
     template_name = 'articles/article_create.html'
 
     def test_func(self):
-        return self.request.user.is_staff
+        return self.request.user.groups.filter(name='Content creator').exists() or self.request.user.is_staff
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
@@ -76,6 +78,30 @@ class EducationalArticleDetailView(LoginRequiredMixin, DetailView):
     template_name = 'articles/article_details.html'
 
     context_object_name = 'article'
+    # comments = Comment.objects.filter(article = self.object).order_by('-date')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comment_form'] = CommentForm()
+        context['comments'] = Comment.objects.filter(article=self.object)
+
+        # # Calculate average rating
+        # average_rating = Comment.objects.filter(article=self.object).aggregate(Avg('rating'))['rating__avg']
+        # context['average_rating'] = round(average_rating, 1) if average_rating else None
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.author = request.user
+            new_comment.article = self.get_object()
+            new_comment.save()
+
+            return redirect('article details', article_slug=self.get_object().slug)
+        else:
+            messages.error(request, 'Comment could not be added.')
+            return self.get(request, *args, **kwargs)  # Render the page again with validation errors
 
     #Donchos way to pass the 'slug' from url
     # slug_url_kwarg = "article_slug"
@@ -87,6 +113,9 @@ class EducationalArticleDetailView(LoginRequiredMixin, DetailView):
     def get_object(self, queryset=None):
         slug = self.kwargs.get('article_slug')
         return EducationalArticle.objects.get(slug=slug)
+
+
+
 
 # class EducationArticleListView(DetailView):
 #     model = UserModel

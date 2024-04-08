@@ -22,7 +22,7 @@ class EducationalArticle(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    gallery = models.ManyToManyField('Gallery', blank=True)
+    # gallery = models.ManyToManyField('Gallery', blank=True)
 
     slug = models.SlugField(
         unique=True,
@@ -43,6 +43,20 @@ class EducationalArticle(models.Model):
 
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        return f'{self.user}\'s Post- {self.title}'
 
-class Gallery(models.Model):
-    image = models.ImageField(upload_to='education_article_gallery/')
+
+# class Gallery(models.Model):
+#     image = models.ImageField(upload_to='education_article_gallery/')
+
+
+class Comment(models.Model):
+    content = models.TextField()
+    author = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING)
+    article= models.ForeignKey(EducationalArticle, on_delete=models.DO_NOTHING)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.author}\'s comment- {self.created_at}'
