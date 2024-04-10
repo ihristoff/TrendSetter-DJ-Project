@@ -43,31 +43,27 @@
 
 <nav class="navigation">
     <ul role="list">
+        <li class="nav-item"><a href="{% url 'education articles' %}" class="nav-link ">Education</a></li>
+        <li class="nav-item"><a href="{% url 'trade ideas dashboard' %}" class="nav-link">Ideas</a></li>
         {% if not request.user.is_authenticated %}
-            <li class="nav-item"><a href="{% url 'education articles' %}" class="nav-link ">Education</a></li>
-            <li class="nav-item"><a href="{% url 'trade ideas dashboard' %}" class="nav-link">Ideas</a></li>
+            
             <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Login</a></li>
 {#            <li class="nav-item"><a href="{% url 'register' %}" class="nav-link">Join</a></li>#}
             
         {% else %}
             
-    
-           
-        {% if user.is_staff  and user.is_authenticated %}
+            <li class="nav-item"><a href="{% url 'create idea'  %}" class="nav-link">Share Idea</a></li>
+                {% if user.is_staff  and user.is_authenticated %}
             <li class="nav-item"><a href="{% url 'create article'  %}" class="nav-link">Create Article</a></li>
         {% endif %}
-        {% if user.is_authenticated %}
-            <li class="nav-item"><a href="{% url 'create idea'  %}" class="nav-link">Share Idea</a></li>
-                <h4>You are logged in as: {{ request.user }}</h4>
+            <h4>You are logged in as: {{ request.user }}</h4>
             
-            
-            
-                
+        
                     <div class="profile">
                     {% if request.user.profile.profile_image %}
-                        <img src="{{ request.user.profile.profile_image }}" alt="Profile Picture" class="profile-img" id="profileBtn">
+                        <img src="{{ request.user.profile.profile_image.url }}" alt="Profile Picture" class="profile-img" id="profileBtn">
                     {% else %}
-                            <img src="{% static 'images/anonymous-user.webp' %}" alt="Profile Picture" class="profile-img" id="profileBtn">
+                        <img src="{% static 'images/anonymous-user.webp' %}" alt="Profile Picture" class="profile-img" id="profileBtn">
                     
                     {% endif %}    
                         <div class="dropdown-menu" id="dropdownMenu">
@@ -82,14 +78,14 @@
                               
                         </div>
                     </div>
-                
+            
 {#                            <img src="{{ request.user.profile_image.url }}" alt="profile-picture-thumbnail" class="profile-picture-thumbnail">#}
 {#                        #}
 {#                            <img src="{% static 'images/default-profile-picture.jpg' %}" alt="default_profile_picture" class="profile-picture-thumbnail">#}
             
             
     {% endif %}
-        {% endif %}
+    
     </ul>
 </nav>
 </header>

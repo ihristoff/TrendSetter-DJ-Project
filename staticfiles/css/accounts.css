@@ -5,7 +5,8 @@ body {
 }
 
 
-.register {
+.register,
+.main-container {
 
     background-color: #131722;
     border-radius: 3px;
@@ -14,7 +15,7 @@ body {
     display: flex;
     font-size: 14px;
     flex-direction: column;
-    width: 360px;
+    width: auto;
 
     overflow: hidden;
     padding: 1rem;
@@ -26,19 +27,19 @@ body {
 
 }
 
-/*.form-container {
-    max-width: 400px;
+.form-container {
+    max-width: 600px;
     margin: auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+
 }
 
-/* Form field styling */
-.form-group {
-    margin-bottom: 0.75rem;
-}
+
+/*.form-group {*/
+/*    margin-bottom: 0.25rem;*/
+/*    align-items: center;*/
+/*    padding: 0.5rem;*/
+/*}*/
 
 /* Label styling */
 .form-group label {
@@ -87,3 +88,29 @@ font-size: 1rem;
     color: green;
 }
 
+
+
+
+   /*.main-container{*/
+   /*    display: flex;*/
+   /*    flex-direction: column;*/
+   /*    max-width: 800px;*/
+
+   /*}*/
+   .profile-info{
+       display: flex;
+       flex-direction: row;
+       padding: 1rem;
+       margin-bottom: 1rem;
+   }
+   .profile-image{
+       width: 200px;
+       height:100%;
+       border: 1px solid #bbbbbb;
+   }
+
+   .profile_control{
+       margin-top:1rem;
+       padding: 0.5rem ;
+       display: block;
+   }

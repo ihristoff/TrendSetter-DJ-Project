@@ -17,6 +17,7 @@
             <button type="submit">Submit</button>
         </form>
     </div>
+#    <p>Views: {{ article.views }}</p> 
     {#    {% if average_rating %}#}
     {#    <p>Average Rating: {{ average_rating }}/5</p>#}
     {#{% else %}#}
@@ -29,8 +30,9 @@
         <div class="comments">
             <div class="comment-author">
                 <h6>
-                     {% if request.user.profile.profile_image %}
-                        <img src="{{ request.user.profile.profile_image }}" alt="Author Avatar" class=" avatar">
+                     {% if comment.author.profile.profile_image.url %}
+                         <p>RED</p>
+                        <img src="{{ comment.author.profile.profile_image.url}}" alt="Author Avatar" class=" avatar">
                      {% else %}
                         <img src="{% static 'images/anonymous-user.webp' %}" alt="Author Avatar" class=" avatar">
                      {% endif %}

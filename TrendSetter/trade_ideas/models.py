@@ -1,7 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
 from TrendSetter.articles.validators import image_size_validator
 
+
+UserModel = get_user_model()
 class TradeIdea(models.Model):
     MAX_MARKET_LENGTH = 15
 
@@ -9,6 +12,8 @@ class TradeIdea(models.Model):
         ('short_term', 'Short Term'),
         ('long_term', 'Long Term'),
     ]
+
+    user = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING, related_name='trade_ideas')
 
     title = models.CharField(
         max_length=25,
@@ -40,3 +45,8 @@ class TradeIdea(models.Model):
         auto_now=True,
     )
 
+    # views = models.PositiveIntegerField(default=0)
+
+    # def increase_views(self):
+    #     self.views += 1
+    #     self.save()

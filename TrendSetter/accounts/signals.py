@@ -23,5 +23,11 @@ def user_created(sender, instance, created, *args, **kwargs):
     # profile = Profile(user=instance)
     # profile.save()
 
+    # ---- add user to a Group 'Regular User' after creation
+    # if created:
+    #     group = Group.objects.get_or_create(name='Regular User')
+    #     instance.groups.add(group)
+    #     instance.save()
+
 
 #TODO send mail

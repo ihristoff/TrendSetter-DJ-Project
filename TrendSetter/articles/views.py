@@ -115,6 +115,15 @@ class EducationalArticleDetailView(LoginRequiredMixin, DetailView):
         return EducationalArticle.objects.get(slug=slug)
 
 
+    # <-------increase views -------->
+    # def get(self, request, *args, **kwargs):
+    #     # Call the parent class's get method to retrieve the object
+    #     response = super().get(request, *args, **kwargs)
+    #
+    #     # Increment the view counter
+    #     self.object.increase_views()
+    #
+    #     return response
 
 
 # class EducationArticleListView(DetailView):

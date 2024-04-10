@@ -13,14 +13,20 @@ UserModel = get_user_model()
 class EducationalArticle(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING, related_name='education_articles')
     title = models.CharField(max_length=255, unique=True,)
+
+
+    # Running on AWS will have problems with uploaded files. It will delete all user created after restart. Use Cloudinary - easy peasy
     image = models.ImageField(
         upload_to='education_articles/',
         validators=(image_size_validator,),
     )
+
+
     # category = models.CharField(max_length=25, )
     description = RichTextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    # views = models.PositiveIntegerField(default=0)
 
     # gallery = models.ManyToManyField('Gallery', blank=True)
 
@@ -45,6 +51,10 @@ class EducationalArticle(models.Model):
 
     def __str__(self):
         return f'{self.user}\'s Post- {self.title}'
+
+    # def increase_views(self):
+    #     self.views += 1
+    #     self.save()
 
 
 # class Gallery(models.Model):

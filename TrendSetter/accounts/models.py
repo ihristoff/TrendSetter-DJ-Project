@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.contrib.auth import models as auth_models, get_user_model
 from TrendSetter.accounts.managers import TrendSetterUserManager
+from TrendSetter.articles.validators import image_size_validator
+
 
 #Auth Data
 class TrendSetterUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
@@ -23,6 +25,8 @@ class TrendSetterUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin
         default=False,
     )
 
+
+
     USERNAME_FIELD = "email"
 
     objects= TrendSetterUserManager()
@@ -40,6 +44,28 @@ class TrendSetterUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin
 
 #TODO: Profile fields
 class Profile(models.Model):
+    # DISPLAY_CHOICES = [
+    #     ('first_last', 'First Name Last Name'),
+    #     ('username', 'Username'),
+    #     ('email', 'Email'),
+    # ]
+    #
+    # display_preference = models.CharField(
+    #     max_length=20,
+    #     choices=DISPLAY_CHOICES,
+    #     default='first_last',
+    # )
+
+    BEGINNER = 'beginner'
+    INTERMEDIATE = 'intermediate'
+    ADVANCED = 'advanced'
+
+    EXPERIENCE_CHOICES = [
+        (BEGINNER, 'Beginner'),
+        (INTERMEDIATE, 'Intermediate'),
+        (ADVANCED, 'Advanced'),
+    ]
+
     user = models.OneToOneField(
         #no need to use UserModel here because both models are in one file
         TrendSetterUser,
@@ -48,17 +74,45 @@ class Profile(models.Model):
     )
     date_of_birth = models.DateField(null=True, blank=True)
     # profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
-    profile_image = models.URLField(null=True, blank=True)
-    trading_from = models.CharField(max_length=50, null=True, blank=True)
- #    gender = models.Choices()
- # username =
+    profile_image = models.ImageField(
+        upload_to='profile_images/',
+        validators=(image_size_validator,),
 
- # idea = models.ForeighKey(Idea)
- # comment = models.ForeignKey(Comment)
+    )
+    age = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
+    location = models.CharField(max_length=50, null=True, blank=True)
+    trading_experience = models.CharField(
+        max_length=12,
+        choices=EXPERIENCE_CHOICES,
+        default=BEGINNER,
+    )
+
+
+
  # # Add any additional fields related to the user profile
  #    def __str__(self):
  #        return self.user.email
+#
 
+# -------------------- HTML choices
+# {% if user.profile.display_preference == 'first_last' %}
+#     {% if user.profile.first_name and user.profile.last_name %}
+#         {{ user.profile.first_name }} {{ user.profile.last_name }}
+#     {% elif user.profile.username %}
+#         {{ user.profile.username }}
+#     {% else %}
+#         {{ user.email }}
+#     {% endif %}
+# {% elif user.profile.display_preference == 'username' %}
+#     {{ user.profile.username }}
+# {% else %}
+#     {{ user.email }}
+# {% endif %}
+#
+# ---------------------------
 
     # @property
     # def full_name(self):

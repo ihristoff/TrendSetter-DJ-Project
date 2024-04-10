@@ -1,7 +1,7 @@
 from django.urls import path
 
 from TrendSetter.accounts.views import LoginUserView, RegisterUserView, LogoutUserView, DetailsProfileView, \
-    UpdateProfileView, DeleteProfileView
+    UpdateProfileView, DeleteProfileView, ChangePasswordProfileView
 
 #LogoutUserView
 
@@ -13,4 +13,5 @@ urlpatterns = (
     path('details/<int:pk>', DetailsProfileView.as_view(), name='profile details'),
     path('update/<int:pk>', UpdateProfileView.as_view(), name='profile update'),
     path('delete/<int:pk>', DeleteProfileView.as_view(), name='profile delete'),
+    path('change_password/<int:pk>', ChangePasswordProfileView.as_view(), name='profile change password'),
 )
