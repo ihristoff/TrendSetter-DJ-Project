@@ -1,42 +1,100 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load crispy_forms_filters %}
 
-{% block content %}
 
-    <div class="container">
-    <form action = {% url 'profile details' pk=request.user.pk %} >
-{#        <form action = {% url 'login' %}?next={{ next }}   method='post'         #}
-        
-        
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/accounts.css' %}"/>    
+       
+        <div class="main-container">
+        <h1>{{ request.user }} Profile Details</h1>
+        <div class="profile-info">
+        <div class="profile-image">
+            {% if object.profile_image %}
+                <img src="{{ object.profile_image.url }}" class="profile-image" alt="profile_picture">
+           {% else %}
+                <img src="{% static 'images/anonymous-user.webp' %}" alt="default_profile_picture" class="profile-image">
+           {% endif %}
+        </div>
+        <div class="details">
+            {% if object.age %}
+            <p>Age: {{ object.age }}</p>
+            {% endif %}
+            {% if object.experience %}
+            <p>Experience: {{ object.experience }}</p>
+            {% endif %}
+            {% if object.location %}
+                <p>Location: {{ object.location }}</p>
+            {% endif %}
             
-         <div class="form-row">
-             <div class="form-group col-md-4 mb-0">
-{#                 {{ profile.user|as_crispy_field}}#}
-                    <p>{{  object.user.email }}</p> 
-                 
-                 <p>Date of birth: {{ object.date_of_birth|date:"Y-m-d"}}</p> 
-                 <p>Trading from: {{ object.trading_from }}</p> 
+            
+{#            {% for field in object.objects.all() %}#}
+{#                <p>{{ field }}</p>#}
+{#            {% endfor %}#}
+        
+        
+            {% if request.user.comment_set.count  %}
+            <p>Comments {{ request.user.comment_set.count }}</p>
+            {% endif %}
+        
+
+
+        </div>
+        </div>
+        <div class="profile_control">
+        <button><a href="{% url 'profile update' pk=request.user.pk %}" class="link-button">Edit Profile</a></button>
+        <button><a href="{% url 'profile delete' pk=request.user.pk %}" class="link-button danger">Delete Profile</a></button>
+        <button><a href="{% url 'profile change password' pk=request.user.pk %}" class="link-button">Change Password</a></button>
             </div>
-         
-{#        TODO does not visualize ??! #}
-     
+{#        <button><a href="{% url 'reservation-list' pk=object.pk %}" class="link-button">Manage Reservations</a></button>#}
+{#        <button><a href="{% url 'client-reviews-list' pk=object.pk %}" class="link-button">My Reviews</a></button>#}
  
-                
-                 {% if object.date_of_birth %}
-            <p>Date of birth: {{ object.date_of_birth|date:"Y-m-d" }}</p>
-         {% else %}
-                <p>Date of birth: Not provided</p>
-         {% endif %}
-             {% if object.profile_image %}
+{% endblock %}
+
+
+
+
+
+
+{##}
+{#{% block content %}#}
+{##}
+{#    <div class="container">#}
+{#    <form action = {% url 'profile details' pk=request.user.pk %} >#}
+{#        <form action = {% url 'login' %}?next={{ next }}   method='post'         #}
+{#        #}
+{#        #}
+{#            #}
+{#         <div class="form-row">#}
+{#             <div class="form-group col-md-4 mb-0">#}
+{#                 {{ profile.user|as_crispy_field}}#}
+{#                    <p>{{  object.user.email }}</p> #}
+{#                 #}
+{#                 <p>Date of birth: {{ object.date_of_birth|date:"Y-m-d"}}</p> #}
+{#                 <p>Trading from: {{ object.trading_from }}</p> #}
+{#            </div>#}
+{#         #}
+{#        TODO does not visualize ??! #}
+{#     #}
+{# #}
+{#                #}
+{#                 {% if object.date_of_birth %}#}
+{#            <p>Date of birth: {{ object.date_of_birth|date:"Y-m-d" }}</p>#}
+{#         {% else %}#}
+{#                <p>Date of birth: Not provided</p>#}
+{#         {% endif %}#}
+{#             {% if object.profile_image %}#}
 {#              <div class="form-group col-md-4 mb-0">#}
 {#                  {{ profile.user.password2|as_crispy_field }}#}
-                   <img width="100" class='profile-image' src='{{ object.profile_image  }}' alt='profile pic'/> 
+{#                   <img width="100" class='profile-image' src='{{ object.profile_image  }}' alt='profile pic'/> #}
 {#             </div>#}
-             {% endif %}
-         </div>
-        {% csrf_token %}
+{#             {% endif %}#}
+{#         </div>#}
+{#        {% csrf_token %}#}
 {#        <a href="{% url 'delete profile' %}">Delete</a>#}
 {#        or <a href="{% url 'update profile' %}">Update Profile</a>#}
-    </form>
-</div>
-{% endblock %}
+{#    </form>#}
+{#</div>#}
+{#{% endblock %}#}
+{##}
+{##}

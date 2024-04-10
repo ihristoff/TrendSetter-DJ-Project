@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+
+        <style>
+        /* Your custom CSS styles go here */
+      
+        .container {
+            text-align: center;
+            padding: 100px;
+        }
+        h1 {
+            font-size: 48px;
+            color: lawngreen;
+        }
+        p {
+            font-size: 18px;
+            color: lawngreen;
+        }
+    </style>
+    
+     <div class="container">
+        <h1>Oops! Page Not Found</h1>
+        <p>The page you're looking for doesn't exist. Let's get you back on track:</p>
+        <a href="/" style="text-decoration: none; color: lawngreen;">Go to Homepage</a>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Share your Trading Idea</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Share">
+    </form>
+{% endblock %}
+
+
+{% block extra_js %}
+    {{ form.media.js }}
+{% endblock %}

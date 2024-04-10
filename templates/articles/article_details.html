@@ -1,12 +1,88 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
-    <form action="{% url 'article details' article_slug=object.slug %}"  method="post">
-    <h2>{{ object.title }}</h2>
-    <img width="500" src="{{ object.image.url }}" alt="{{ object.title }}">
-    <p>{{ object.description }}</p>
     
-    <button type="submit">Update</button>
-    {% csrf_token %}
-    </form>
+<link rel="stylesheet" href="{% static 'css/article_details.css' %}"/>        
+<div class="article-details">
+
+    <h1>{{ object.title }}</h1>
+    <img id="myImg" class="article-img" src="{{ article.image.url }}" alt="{{ article.title }}">
+    <div class="article-content">{{ object.content }}</div>
+
+    <div class="add-comment">
+        <h4>Add a comment:</h4>
+        <form method="post" id="commentForm">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+#    <p>Views: {{ article.views }}</p> 
+    {#    {% if average_rating %}#}
+    {#    <p>Average Rating: {{ average_rating }}/5</p>#}
+    {#{% else %}#}
+    {#    <p>No ratings yet.</p>#}
+    {#{% endif %}#}
+    
+
+    <h5>{{ comments.count }} Comments: </h5>
+    {% for comment in comments %}
+        <div class="comments">
+            <div class="comment-author">
+                <h6>
+                     {% if comment.author.profile.profile_image.url %}
+                         <p>RED</p>
+                        <img src="{{ comment.author.profile.profile_image.url}}" alt="Author Avatar" class=" avatar">
+                     {% else %}
+                        <img src="{% static 'images/anonymous-user.webp' %}" alt="Author Avatar" class=" avatar">
+                     {% endif %}
+                  </h6>
+                <h6>{% if comment.author.username %}
+                        {{ comment.author.username }} - {{ comment.created_at|date:"d M Y" }}
+                    {% else %}
+                        {{ comment.author.email }} - Posted on:{{ comment.created_at|date:"d M Y" }}
+                    {% endif %}
+                </h6>
+            </div>
+            <p class="comment">{{ comment.content }}</p>
+        </div>
+    {% empty %}
+        <p>No comments yet.</p>
+    {% endfor %}
+
+    <div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+</div>
+</div>
+    
+
+
+
+ 
+    
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+var img = document.getElementById("myImg");
+var modalImg = document.getElementById("img01");
+var captionText = document.getElementById("caption");
+img.onclick = function(){
+  modal.style.display = "block";
+  modalImg.src = this.src;
+  captionText.innerHTML = this.alt;
+}
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() { 
+  modal.style.display = "none";
+}
+</script>
+
 {% endblock %}

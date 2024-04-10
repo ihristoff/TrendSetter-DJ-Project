@@ -19,13 +19,17 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+# from django.conf.urls import handler404
 
+handler404 = 'TrendSetter.main.views.custom_404'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('TrendSetter.main.urls')),
     path('accounts/', include('TrendSetter.accounts.urls')),
     path('articles/', include('TrendSetter.articles.urls')),
+    path('trade_ideas/', include('TrendSetter.trade_ideas.urls')),
+    # path('ratings/', include('TrendSetter.ratings.urls')),
 
 
 

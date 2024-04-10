@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <form action="{% url 'delete idea' pk=object.pk %}" method="post">
+    {{ form }}
+    
+        <button type="submit">Delete</button>
+        <a href="{% url 'index' %}">Cancel</a>
+    {% csrf_token %}
+    </form>
+
+
+{% endblock %}
