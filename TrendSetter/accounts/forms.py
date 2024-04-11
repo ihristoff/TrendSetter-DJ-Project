@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth import forms as auth_forms
+from django.contrib.auth.forms import PasswordChangeForm
 from django.forms import ModelForm
 
 from TrendSetter.accounts.models import Profile
@@ -28,3 +29,9 @@ class ProfileForm(ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
+
+
+
+class ChangePassword(PasswordChangeForm):
+    class Meta:
+        model = UserModel

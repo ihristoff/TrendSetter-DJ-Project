@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+    <h2>Delete Article</h2>
+   
+
+{##}
+{#    #}
+{#     <p>Are you sure you want to delete "{{ object }}"?</p>#}
+
+    <form  action="{% url 'delete article' article_slug=object.slug %}"  method="post">
+{#            <p>Title{{ object.title }}</p>#}
+{#            <p>Object.slug {{ object.slug }}</p>#}
+{#  #}
+{#       <img src="{{ image.url }}" alt="{{ object }}" width="500">#}
+        {{ form.as_p }}
+        {% csrf_token %}
+        <button type="submit">Confirm</button>
+    </form>
+
+{% endblock %}

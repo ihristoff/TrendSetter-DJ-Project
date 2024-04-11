@@ -1,10 +1,18 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
+
     <h2>Edit Education Article</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+         {{ form.media }}
+        <p>{{ form.title }}</p>
+        <p>{{ form.image }}</p>
+        <p id="description">{{ form.description }}</p>
         <input type="submit" value="Update">
     </form>
+    
+    
+
 {% endblock %}

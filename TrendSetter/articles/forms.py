@@ -1,9 +1,10 @@
 from django import forms
 from .models import EducationalArticle, Comment
-
 from django import forms
-from .models import EducationalArticle
+from ckeditor.widgets import CKEditorWidget
+
 class EducationalArticleForm(forms.ModelForm):
+    description = forms.CharField(widget=CKEditorWidget())
     class Meta:
         model = EducationalArticle
         fields = ['title', 'image','description']
@@ -26,6 +27,7 @@ class EducationalArticleForm(forms.ModelForm):
     #     'description':'Des Long'
     # }
 
+
 class CommentForm(forms.ModelForm):
     content = forms.CharField(label ="", widget = forms.Textarea(
     attrs ={
@@ -37,3 +39,21 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields =['content']
+
+
+class EducationalArticleFormDelete(forms.ModelForm):
+
+    class Meta:
+        model = EducationalArticle
+        fields = ['title', 'image']
+
+    def save(self, commit=True):
+        if commit:
+            self.instance.delete()
+        return self.instance
+
+    def delete(self, request, *args, **kwargs):
+        print("Delete method called")
+        obj = self.get_object()
+        obj.delete()
+        return HttpResponseRedirect(self.get_success_url())

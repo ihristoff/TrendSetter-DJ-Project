@@ -29,29 +29,31 @@ body {
 
 .article-img {
   align-items: center;
+  /*width:100%;*/
+  overflow:hidden;
 }
 
 .avatar {
-  width: 20px;
-  height: 20px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   margin-right: 0.25rem;
 }
 
-.comment-author {
+.comment-author{
   display: flex;
   flex-direction: row;
+  padding:0.25rem;
+
 }
 
 .comments {
-
-
     margin-bottom: 6px;
-
 }
-.comments h6 {
+.comment-author p {
   padding:0;
   margin: 0;
+  font-size: 0.75rem;
 }
 
 .comment {
@@ -60,7 +62,7 @@ body {
     margin-left: 25px;
     margin-bottom: 15px;
     border-radius: 5px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
 }
 
 #myImg {
