@@ -2,10 +2,12 @@ from django.contrib.auth import get_user_model
 from django.db import models
 
 from django.db import models
+from django.db.models import Count
 from django.utils.text import slugify
 
 from TrendSetter.articles.validators import image_size_validator
 from ckeditor.fields import RichTextField
+
 
 UserModel = get_user_model()
 
@@ -21,12 +23,11 @@ class EducationalArticle(models.Model):
         validators=(image_size_validator,),
     )
 
-
     # category = models.CharField(max_length=25, )
     description = RichTextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # views = models.PositiveIntegerField(default=0)
+    views = models.PositiveIntegerField(default=0)
 
     # gallery = models.ManyToManyField('Gallery', blank=True)
 
@@ -52,13 +53,23 @@ class EducationalArticle(models.Model):
     def __str__(self):
         return f'{self.user}\'s Post- {self.title}'
 
-    # def increase_views(self):
-    #     self.views += 1
-    #     self.save()
+    def increase_views(self):
+        self.views += 1
+        self.save()
+
+    # @classmethod
+    # def get_most_viewed(cls, limit=5):
+    #     return cls.objects.annotate(num_views=Count('views')).order_by('-num_views')[:limit]
+    #
+    # @classmethod
+    # def get_most_commented(cls, limit=5):
+    #     return cls.objects.annotate(num_comments=Count('comment')).order_by('-num_comments')[:limit]
+    #
+    # @classmethod
+    # def get_most_recent(cls, limit=5):
+    #     return cls.objects.order_by('-created_at')[:limit]
 
 
-# class Gallery(models.Model):
-#     image = models.ImageField(upload_to='education_article_gallery/')
 
 
 class Comment(models.Model):

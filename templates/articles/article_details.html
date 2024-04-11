@@ -3,11 +3,20 @@
 {% block content %}
     
 <link rel="stylesheet" href="{% static 'css/article_details.css' %}"/>        
+    
+       <div class="sort-navigation">
+    <a href="{% url 'update article' article.slug %}">Update article</a>
+    <a href="{% url 'delete article' article.slug %}">Delete article</a>
+    <!-- Add more sorting options as needed -->
+</div>
 <div class="article-details">
 
     <h1>{{ object.title }}</h1>
     <img id="myImg" class="article-img" src="{{ article.image.url }}" alt="{{ article.title }}">
-    <div class="article-content">{{ object.content }}</div>
+    <div class="article-content">{{ object.description|safe }}</div>
+{#    <p >Click to enlarge</p> #}
+    <p>Views: {{ article.views }}</p> 
+    
 
     <div class="add-comment">
         <h4>Add a comment:</h4>
@@ -17,7 +26,7 @@
             <button type="submit">Submit</button>
         </form>
     </div>
-#    <p>Views: {{ article.views }}</p> 
+   
     {#    {% if average_rating %}#}
     {#    <p>Average Rating: {{ average_rating }}/5</p>#}
     {#{% else %}#}
@@ -29,20 +38,20 @@
     {% for comment in comments %}
         <div class="comments">
             <div class="comment-author">
-                <h6>
-                     {% if comment.author.profile.profile_image.url %}
-                         <p>RED</p>
+                <p>
+                     {% if comment.author.profile.profile_image %}
+                         
                         <img src="{{ comment.author.profile.profile_image.url}}" alt="Author Avatar" class=" avatar">
                      {% else %}
                         <img src="{% static 'images/anonymous-user.webp' %}" alt="Author Avatar" class=" avatar">
                      {% endif %}
-                  </h6>
-                <h6>{% if comment.author.username %}
-                        {{ comment.author.username }} - {{ comment.created_at|date:"d M Y" }}
+                  </p>
+                <p>{% if comment.author.username %}
+                        {{ comment.author.profile.username }} - {{ comment.created_at|date:"d M Y h:m" }}
                     {% else %}
-                        {{ comment.author.email }} - Posted on:{{ comment.created_at|date:"d M Y" }}
+                        {{ comment.author }} - Posted on:{{ comment.created_at|date:"d M Y h:m" }}
                     {% endif %}
-                </h6>
+                </p>
             </div>
             <p class="comment">{{ comment.content }}</p>
         </div>

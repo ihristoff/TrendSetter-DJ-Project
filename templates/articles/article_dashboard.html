@@ -1,137 +1,195 @@
 {% extends "base.html" %}
+{% load custom_filters %}
+
 {% load url_replace %}
 {% load static %}
 {% load humanize %}
-   {% block search %}
-    <form method="get" action="{% url 'education articles' %}">
-        <input type="text" name="q" placeholder="Search by title" value="{{ request.GET.q }}">
-        <input type="submit" value="Search">
-    </form>
-        {% endblock search %}
+{% load custom_filters %}
+
+
 {% block content %}
     <style>
 
         body {
-            {#background: cornflowerblue;#}
-             background: black;
+        {#background: cornflowerblue;#} background: orange;
         }
 
-        .all-cards{
+        .all-cards {
             font-size: 13px;
-    {#margin-bottom: 20px;#}
-    {#padding: 0 10px;#}
-
-  display: flex;
-  flex-direction: row;
-  {#flex-wrap: wrap;#}
-  gap: 2vw;
-  {#align-items: center;#}
-  justify-content: center;
-  {#text-align: center;#}
+        {#margin-bottom: 20px;#}{#padding: 0 10px;#} display: flex;
+            flex-direction: row;
+        flex-wrap: wrap;
+            gap: 2vw;
+            {#justify-content: center;#}
+        {#align-items: center;#} 
+        {#text-align: center;#} color: white
         }
 
         .card {
-           
-    background-color: black;
-    border-radius: 6px;
-         box-shadow: 0 0 0 1px #363a45;
-    {#box-sizing: border-box;#}
-    display: flex;
-    {#flex: 1 0 auto;#}
-    flex-direction: column;
+
+            background-color: black;
+            border-radius: 6px;
+            box-shadow: 0 0 0 1px #363a45;
+        {#box-sizing: border-box;#} display: flex;
+        {#flex: 1 0 auto;#} flex-direction: column;
             width: 360px;
             height: 480px;
-    overflow: hidden;
-    padding: 20px;
+            overflow: hidden;
+            padding: 20px;
             color: white;
-    {#position: relative;#}
-}
-        .card-title{
+        {#position: relative;#}
+        }
+
+        .card-title {
             font-size: 1.25rem;
             text-decoration: none;
             color: #d1d4dc;
             padding-bottom: 6px;
-            
+
         }
-        .card-title:hover{
-                        color: green;
-            
+
+        .card-title:hover {
+            color: green;
+
         }
-        
-        .card-img
-        {
+
+        .card-img {
             background-color: black;
             box-shadow: 0 0 0 1px #363a45;
-            {#box-shadow: 0 0 0 1px #e0e3eb;#}
-            {#height: 8rem;#}
-            align-items: center;
+        {#box-shadow: 0 0 0 1px #e0e3eb;#}{#height: 8rem;#} align-items: center;
             border-radius: 3px;
-    box-sizing: border-box;
-    display: block;
-    max-height: 160px;
-    width: 100%;
+            box-sizing: border-box;
+            display: block;
+            max-height: 160px;
+            width: 100%;
             object-fit: cover;
             margin-bottom: 6px;
 
         }
 
-        li {padding: 10px;}
+        li {
+            padding: 10px;
+        }
 
-    .pagination {
-        display: flex;
-        color:white;
-        
-    }
+
+        /* Pagination */
+        .pagination-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .pagination {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .pagination .page-item {
+            display: inline-block;
+        }
+
+        .pagination .page-link {
+            padding: 8px 12px;
+            background-color: green;
+            color: white;
+            border: 1px solid green;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .pagination .page-link:hover,
+        .pagination .page-item.active .page-link {
+            background-color: #40c964;
+            border-color: #40c964;
+        }
+
+        .pagination .page-link:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+        }
 
 
     </style>
- 
-    <h2>Our best setups!</h2>
-    <div class="all-cards">
-    {% for article in articles %}
+<div class="main">
 
-        <div class="card" >
-            <a class="card-title" href="{% url 'article details' article.slug %}">{{ article.title| upper  }} </a>
-            
-            <img class="card-img" src="{{ article.image.url }}" alt="{{ article.title }}">
-            <div class="card-body">
-                
-                <p class="card-text">{{ article.description|safe |truncatechars:200 }}...</p>
-            </div>
+    <div class="filter-buttons">
+        <a href="?filter=most_viewed">Most Viewed</a>
+        <a href="?filter=most_commented">Most Commented</a>
+        <a href="?filter=most_recent">Most Recent</a>
+        <div>
+              <form method="get" action="{% url 'education articles' %}">
+        <input type="text" name="q" placeholder="Search by title" value="{{ request.GET.q }}">
+        <input type="submit" value="Search">
+    </form>
+        </div>
+
+    </div>
+  
+
+
+
+<div class="all-cards">
+    {% for article in articles %}
+        <div class="card">
+            <a class="card-title" href="{% url 'details article' article.slug %}">{{ article.title|upper }}</a>
+
+            <img class="card-img" src="{{ article.image.url }}" alt="{{ article.title }}" />
+
+            <p class="card-text">{{ article.description|safe |truncatechars:200|sanitize }}...</p>
+
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">Category</li>
-{#                <li class="list-group-item">#}
-
-
-{#                    <small class="text-muted">Published {{ article.created_at|naturaltime }}</small>#}
-{#                </li>#}
-                    <li class="list-group-item">Vestibulum at eros</li>
+                <li class="list-group-item">
+                    <small class="text-muted">Published {{ article.created_at }}</small>
+                </li>
+                <li class="list-group-item">Vestibulum at eros</li>
             </ul>
             <div class="card-body">
                 <a href="#" class="card-link">Read More</a>
                 <a href="#" class="card-link">See Gallery</a>
             </div>
         </div>
+    {% endfor %}
+</div>
+</div>
+<!-- Pagination -->
+<div class="pagination-container">
+    <ul class="pagination">
+        {% if articles.has_previous %}
+            <li class="page-item">
+                <a href="?page=1" class="page-link">&laquo; First</a>
+            </li>
+            <li class="page-item">
+                <a href="?page={{ articles.previous_page_number }}" class="page-link">Previous</a>
+            </li>
+        {% endif %}
+
+        {% for i in articles.paginator.page_range %}
+            {% if articles.number == i %}
+                <li class="page-item active">
+                    <span class="page-link">{{ i }}</span>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                </li>
+            {% endif %}
         {% endfor %}
-    </div>
-    <div class="pagination">
-    <p>Has previous? {{ articles.has_previous }}</p>
-        <p>'     .............     '</p>
-        <br>
-    <p>Nas next?  {{ articles.has_next }}</p>
-     <p>'     .............     '</p>
-        <br>
-    <p>Nuber  {{ articles.number }}</p>
-    
-     <p>'     .............     '</p>
-        <br>
-    <p>Number of pages  {{ articles.paginator.num_pages }}</p>
-    <p>'     .............     '</p>
-        <br>
-    <p>Previouse page number {% if articles.previous_page_number is not None %} {{ articles.previous_page_number }} {%  endif %}</p>
-    </div>
 
-
+        {% if articles.has_next %}
+            <li class="page-item">
+                <a href="?page={{ articles.next_page_number }}" class="page-link">Next</a>
+            </li>
+            <li class="page-item">
+                <a href="?page={{ articles.paginator.num_pages }}" class="page-link">Last &raquo;</a>
+            </li>
+        {% endif %}
+    </ul>
+</div>
 
 
 {% endblock %}

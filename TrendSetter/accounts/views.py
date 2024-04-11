@@ -8,7 +8,7 @@ from django.contrib.auth import forms as auth_forms
 
 from django.urls import reverse_lazy, reverse
 
-from TrendSetter.accounts.forms import AccountUserCreationForm, ProfileForm
+from TrendSetter.accounts.forms import AccountUserCreationForm, ProfileForm, ChangePassword
 from TrendSetter.accounts.models import Profile
 from TrendSetter.articles.models import EducationalArticle, Comment
 from TrendSetter.trade_ideas.models import TradeIdea
@@ -99,7 +99,10 @@ class UpdateProfileView(LoginRequiredMixin, views.UpdateView):
     #     return form
 
 class ChangePasswordProfileView(LoginRequiredMixin, auth_views.PasswordChangeView):
-    pass
+    form_class = ChangePassword
+
+    template_name = "accounts/change-password.html"
+    success_url = reverse_lazy('login')
 
 
 class DeleteProfileView(LoginRequiredMixin, views.DeleteView):
