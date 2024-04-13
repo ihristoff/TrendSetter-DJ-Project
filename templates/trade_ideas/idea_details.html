@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load static %}
+{% block content %}
+
+    <link rel="stylesheet" href="{% static 'css/article_details.css' %}"/>
+
+    {#       <div class="sort-navigation">#}
+    {#    <a href="{% url 'update idea' idea.pk %}">Update idea</a>#}
+    {#    <a href="{% url 'delete idea' idea.pk %}">Delete idea</a>#}
+    {#    <!-- Add more sorting options as needed -->#}
+    {#</div>#}
+<section class="idea-container">    
+    
+    <div class="article-details">
+
+        <h1>{{ object.title }}</h1>
+        <div class="tiny-info">
+            <p>Symbol: {{ object.symbol }}</p>
+            <p>Category: {{ object.category }}</p>
+            <p>Published: {{ object.created_at|naturaltime }}</p>
+            <p>Views: {{ idea.views }}</p>
+        </div>
+        <img id="myImg" class="article-img" src="{{ idea.idea_image.url }}" alt="{{ idea.title }}">
+        <p>Click to enlarge</p>
+        <div class="article-content">Description: {{ object.description|safe }}</div>
+        {#    <p >Click to enlarge</p> #}
+
+
+        <div class="add-comment">
+            <h4>Add a comment:</h4>
+            <form method="post" id="commentForm">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+        <h5>{{ comments.count }} Comments: </h5>
+        {% for comment in comments %}
+            <div class="comments">
+                <div class="comment-author">
+                    <p>
+                        {% if comment.author.profile.profile_image %}
+
+                            <img src="{{ comment.author.profile.profile_image.url }}" alt="Author Avatar"
+                                 class=" avatar">
+                        {% else %}
+                            <img src="{% static 'images/anonymous-user.webp' %}" alt="Author Avatar" class=" avatar">
+                        {% endif %}
+                    </p>
+                    <p>{% if comment.author.username %}
+                        {{ comment.author.profile.username }} - {{ comment.created_at|date:"d M Y h:m" }}
+                    {% else %}
+                        {{ comment.author }} - Posted on:{{ comment.created_at|date:"d M Y h:m" }}
+                    {% endif %}
+                    </p>
+                </div>
+                <p class="comment">{{ comment.content }}</p>
+            </div>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+
+        <div id="myModal" class="modal">
+            <span class="close">&times;</span>
+            <img class="modal-content" id="img01">
+            <div id="caption"></div>
+        </div>
+    </div>
+
+
+
+    {#<script>#}
+    {#// Get the modal#}
+    {#var modal = document.getElementById("myModal");#}
+    {##}
+    {#// Get the image and insert it inside the modal - use its "alt" text as a caption#}
+    {#var img = document.getElementById("myImg");#}
+    {#var modalImg = document.getElementById("img01");#}
+    {#var captionText = document.getElementById("caption");#}
+    {#img.onclick = function(){#}
+    {#  modal.style.display = "block";#}
+    {#  modalImg.src = this.src;#}
+    {#  captionText.innerHTML = this.alt;#}
+    {#}#}
+    {##}
+    {#// Get the <span> element that closes the modal#}
+    {#var span = document.getElementsByClassName("close")[0];#}
+    {##}
+    {#// When the user clicks on <span> (x), close the modal#}
+    {#span.onclick = function() { #}
+    {#  modal.style.display = "none";#}
+    {#}#}
+    {#</script>#}
+
+    <div class="side-bar-left">
+    <div class="symbol-info">
+        <!-- TradingView Widget BEGIN -->
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow"
+                                                         target="_blank"><span class="blue-text">Track all markets on TradingView</span></a>
+            </div>
+            <script type="text/javascript"
+                    src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                {
+                    "symbol"
+                :
+                    "{{ object.symbol }}",
+                        "width"
+                :
+                    "450",
+                        "height"
+                :
+                    "220",
+                        "locale"
+                :
+                    "en",
+                        "dateRange"
+                :
+                    "3M",
+                        "colorTheme"
+                :
+                    "dark",
+                        "isTransparent"
+                :
+                    true,
+                        "autosize"
+                :
+                    true,
+                        "largeChartUrl"
+                :
+                    ""
+                }
+            </script>
+        </div>
+        <!-- TradingView Widget END -->
+        {#        #}
+        {#        <!-- TradingView Widget BEGIN -->#}
+        {#<div class="tradingview-widget-container" style="height:100%;width:100%">#}
+        {#  <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>#}
+        {#  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>#}
+        {#  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>#}
+        {#  {#}
+        {#  "autosize": false,#}
+        {#  "symbol": "{{ object.symbol }}",#}
+        {#  "width": "600",#}
+        {#  "height": "400",#}
+        {#  "interval": "D",#}
+        {#  "timezone": "Etc/UTC",#}
+        {#  "theme": "dark",#}
+        {#  "style": "1",#}
+        {#  "locale": "en",#}
+        {#  "enable_publishing": false,#}
+        {#  "allow_symbol_change": true,#}
+        {#  "calendar": false,#}
+        {#  "support_host": "https://www.tradingview.com"#}
+        {#}#}
+        {#  </script>#}
+        {#</div>#}
+        {#<!-- TradingView Widget END -->#}
+
+
+    </div>
+    </div>    
+    
+    </section>
+
+{% endblock %}

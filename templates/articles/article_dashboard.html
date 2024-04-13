@@ -11,121 +11,143 @@
     <style>
 
         body {
-        {#background: cornflowerblue;#} background: orange;
+        {#background: cornflowerblue;#} background: black;
         }
-
-        .all-cards {
-            font-size: 13px;
+        {##}
+        {#.all-cards {#}
+        {#    font-size: 13px;#}
         {#margin-bottom: 20px;#}{#padding: 0 10px;#} display: flex;
-            flex-direction: row;
-        flex-wrap: wrap;
-            gap: 2vw;
-            {#justify-content: center;#}
+        {#    flex-direction: row;#}
+        {#flex-wrap: wrap;#}
+        {#    gap: 2vw;#}
         {#align-items: center;#} 
         {#text-align: center;#} color: white
-        }
-
-        .card {
-
-            background-color: black;
-            border-radius: 6px;
-            box-shadow: 0 0 0 1px #363a45;
+        {#}#}
+        {##}
+        {#.card {#}
+        {##}
+        {#    background-color: black;#}
+        {#    border-radius: 6px;#}
+        {#    box-shadow: 0 0 0 1px #363a45;#}
         {#box-sizing: border-box;#} display: flex;
         {#flex: 1 0 auto;#} flex-direction: column;
-            width: 360px;
-            height: 480px;
-            overflow: hidden;
-            padding: 20px;
-            color: white;
+        {#    width: 360px;#}
+        {#    height: 480px;#}
+        {#    overflow: hidden;#}
+        {#    padding: 20px;#}
+        {#    color: white;#}
         {#position: relative;#}
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            text-decoration: none;
-            color: #d1d4dc;
-            padding-bottom: 6px;
-
-        }
-
-        .card-title:hover {
-            color: green;
-
-        }
-
-        .card-img {
-            background-color: black;
-            box-shadow: 0 0 0 1px #363a45;
+        {#}#}
+        {##}
+        {#.card-title {#}
+        {#    font-size: 1.25rem;#}
+        {#    text-decoration: none;#}
+        {#    color: #d1d4dc;#}
+        {#    padding-bottom: 6px;#}
+        {##}
+        {#}#}
+        {##}
+        {#.card-title:hover {#}
+        {#    color: green;#}
+        {##}
+        {#}#}
+        {##}
+        {#.card-img {#}
+        {#    background-color: black;#}
+        {#    box-shadow: 0 0 0 1px #363a45;#}
         {#box-shadow: 0 0 0 1px #e0e3eb;#}{#height: 8rem;#} align-items: center;
-            border-radius: 3px;
-            box-sizing: border-box;
-            display: block;
-            max-height: 160px;
-            width: 100%;
-            object-fit: cover;
-            margin-bottom: 6px;
-
-        }
-
-        li {
-            padding: 10px;
-        }
-
-
-        /* Pagination */
-        .pagination-container {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .pagination {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            gap: 10px;
-        }
-
-        .pagination .page-item {
-            display: inline-block;
-        }
-
-        .pagination .page-link {
-            padding: 8px 12px;
-            background-color: green;
-            color: white;
-            border: 1px solid green;
-            border-radius: 4px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .pagination .page-link:hover,
-        .pagination .page-item.active .page-link {
-            background-color: #40c964;
-            border-color: #40c964;
-        }
-
-        .pagination .page-link:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
-        }
+        {#    border-radius: 3px;#}
+        {#    box-sizing: border-box;#}
+        {#    display: block;#}
+        {#    max-height: 160px;#}
+        {#    width: 100%;#}
+        {#    object-fit: cover;#}
+        {#    margin-bottom: 6px;#}
+        {##}
+        {#}#}
+        {##}
+        {#li {#}
+        {#    padding: 10px;#}
+        {#}#}
+        {##}
+        {##}
+        {#/* Pagination */#}
+        {#.pagination-container {#}
+        {#    margin-top: 20px;#}
+        {#    display: flex;#}
+        {#    justify-content: center;#}
+        {#}#}
+        {##}
+        {#.pagination {#}
+        {#    list-style: none;#}
+        {#    padding: 0;#}
+        {#    display: flex;#}
+        {#    gap: 10px;#}
+        {#}#}
+        {##}
+        {#.pagination .page-item {#}
+        {#    display: inline-block;#}
+        {#}#}
+        {##}
+        {#.pagination .page-link {#}
+        {#    padding: 8px 12px;#}
+        {#    background-color: green;#}
+        {#    color: white;#}
+        {#    border: 1px solid green;#}
+        {#    border-radius: 4px;#}
+        {#    text-decoration: none;#}
+        {#    cursor: pointer;#}
+        {#    transition: background-color 0.3s ease;#}
+        {#}#}
+        {##}
+        {#.pagination .page-link:hover,#}
+        {#.pagination .page-item.active .page-link {#}
+        {#    background-color: #40c964;#}
+        {#    border-color: #40c964;#}
+        {#}#}
+        {##}
+        {#.pagination .page-link:focus {#}
+        {#    outline: none;#}
+        {#    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);#}
+        {#}#}
 
 
     </style>
+    
+    <link rel="stylesheet" href="{% static 'css/dashboard-cards.css' %}"/>       
 <div class="main">
 
     <div class="filter-buttons">
-        <a href="?filter=most_viewed">Most Viewed</a>
-        <a href="?filter=most_commented">Most Commented</a>
-        <a href="?filter=most_recent">Most Recent</a>
-        <div>
-              <form method="get" action="{% url 'education articles' %}">
-        <input type="text" name="q" placeholder="Search by title" value="{{ request.GET.q }}">
-        <input type="submit" value="Search">
-    </form>
-        </div>
+        <a class="nav-link" href="?filter=most_viewed">Most Viewed</a>
+        <div class="divider"></div>
+        <a class="nav-link" href="?filter=most_commented">Most Commented</a>
+        <div class="divider"></div>
+        <a class="nav-link" href="?filter=most_recent">Most Recent</a>
+      
+        <div class="search">
+            <form method="get" action="{% url 'trade ideas dashboard' %}" class="filter-form">
+        
+                <select name="category" class="filter-select">
+                    <option value="">All Categories</option>
+                    {% for value, label in categories %}
+                        <option value="{{ value }}" {% if category == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+                 <button type="submit" class="filter-button">
+                    <i class="fa fa-search"></i> <!-- Magnifying glass icon -->
+                </button>
+                <div class="divider"></div>
+        
+            
+                <div class="title-search">
+                <input type="text" name="q" placeholder="Search by title" value="{{ request.GET.q }}" class="filter-input">
+                <button type="submit" class="filter-button">
+                    <i class="fa fa-search"></i> <!-- Magnifying glass icon -->
+                </button>
+                </div>    
+            
+            </form>
+           </div>
 
     </div>
   
@@ -155,7 +177,7 @@
         </div>
     {% endfor %}
 </div>
-</div>
+
 <!-- Pagination -->
 <div class="pagination-container">
     <ul class="pagination">
@@ -191,5 +213,7 @@
     </ul>
 </div>
 
+    
+</div>
 
 {% endblock %}

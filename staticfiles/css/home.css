@@ -5,18 +5,7 @@
 /*      }*/
 
 
-.main {
 
-    display: flex;
-    flex-direction: column;
-
-    margin: 50px;
-    border: cornflowerblue;
-    justify-content: space-between;
-    align-items: center;
-    size: 6rem;
-
-}
 
 .item {
     flex: 1 1 1; /* Equal width */

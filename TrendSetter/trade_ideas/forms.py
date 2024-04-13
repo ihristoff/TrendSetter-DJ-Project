@@ -1,7 +1,7 @@
 
 from django import forms
 
-from TrendSetter.trade_ideas.models import TradeIdea
+from TrendSetter.trade_ideas.models import TradeIdea, Comment
 
 
 class CreateTradeIdeaForm(forms.ModelForm):
@@ -13,7 +13,7 @@ class CreateTradeIdeaForm(forms.ModelForm):
 
     class Meta:
         model = TradeIdea
-        fields = ("title", 'symbol', 'timeframe', "idea_image", "description")
+        fields = ("title", 'symbol','timeframe', "idea_image", "description")
 
         # widgets = {
         #     "title": forms.TextInput(attrs={"placeholder": "Title"}),
@@ -39,3 +39,17 @@ class  DeleteTradeIdeaForm(forms.ModelForm):
     class Meta:
         model = TradeIdea
         fields = ("title", 'symbol', 'timeframe', "idea_image")
+
+
+#
+class CommentIdeaForm(forms.ModelForm):
+    content = forms.CharField(label ="", widget = forms.Textarea(
+    attrs ={
+        'class':'form-control',
+        'placeholder':'Your comment here !',
+        'rows':4,
+        'cols':50
+    }))
+    class Meta:
+        model = Comment
+        fields =['content']
