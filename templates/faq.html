@@ -1,0 +1,84 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+    <style>
+       
+        
+           .faq-container {
+            padding: 40px;
+            max-width: 1000px;
+            margin: auto;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .faq-item {
+            margin-bottom: 30px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 20px;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-question {
+            font-weight: bold;
+            font-size: 24px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            color: #007bff;
+            transition: color 0.3s;
+        }
+        .faq-question:hover {
+            color: #0056b3;
+        }
+        .faq-answer {
+            margin-left: 30px;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+    </style>
+    
+    
+<div class="faq-container">
+
+    <div class="faq-item">
+        <div class="faq-question">What is Forex Trading?</div>
+        <div class="faq-answer">
+            Forex trading, or foreign exchange trading, involves buying and selling currencies on the foreign exchange market with the aim of making a profit. It's the largest financial market in the world, with trillions of dollars traded daily.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">How can I get started with trading?</div>
+        <div class="faq-answer">
+            To get started with trading, you'll need to educate yourself about the markets, choose a reliable broker, and develop a trading strategy. It's also important to understand the risks involved and to start with a demo account before trading with real money.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">What are the risks involved in trading?</div>
+        <div class="faq-answer">
+            Trading involves risks, including the risk of losing your investment. It's important to only trade with money you can afford to lose and to use risk management strategies such as setting stop-loss orders and diversifying your investments.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">How can I learn more about trading?</div>
+        <div class="faq-answer">
+            You can learn more about trading through educational resources, online courses, books, and by practicing with a demo account. It's also beneficial to follow market news and analysis to stay informed about the latest trends and developments.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">Is trading suitable for everyone?</div>
+        <div class="faq-answer">
+            Trading is not suitable for everyone and involves risks. It's important to consider your financial situation, risk tolerance, and investment goals before getting started. If you're unsure, it's always a good idea to consult with a financial advisor.
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

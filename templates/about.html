@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    
+    <style>
+    .main-content {
+            padding: 20px;
+        }
+        .educational-section, .ideas-section {
+            margin-bottom: 30px;
+        }
+        .educational-section h2, .ideas-section h2 {
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        .ideas-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        .ideas-section h3 {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+        .ideas-section p {
+            margin-top: 0;
+        }
+    </style>
+    
+<div class="main-content">
+
+    <div id="educational" class="educational-section">
+        <h2>Educational Resources</h2>
+        <p>Our educational section is dedicated to providing traders with comprehensive resources to enhance their trading skills.</p>
+        <ul>
+            <li><strong>Beginner's Guide:</strong> Start your trading journey with our step-by-step guide for beginners.</li>
+            <li><strong>Advanced Strategies:</strong> Dive deeper into advanced trading strategies and techniques.</li>
+            <li><strong>Market Analysis:</strong> Stay updated with the latest market trends and analysis.</li>
+        </ul>
+        <a href="#">View All Educational Resources</a>
+    </div>
+
+    <div id="ideas" class="ideas-section">
+        <h2>User Ideas and Sharing</h2>
+        <h3>Latest Ideas</h3>
+        <ul>
+            <li><strong>Bitcoin Breakout:</strong> A community member shares insights on a potential breakout in the Bitcoin market.</li>
+            <li><strong>Forex Forecast:</strong> Analyzing upcoming currency movements in the Forex market.</li>
+            <li><strong>Stock Picks:</strong> Top stock picks for the month based on community analysis.</li>
+        </ul>
+        <h3>Share Your Idea</h3>
+        <p>Join our community and share your trading ideas with others. Whether you're a novice or an expert, your insights are valuable.</p>
+        <a href="#">Join the Discussion</a>
+    </div>
+
+</div>
+
+{% endblock %}

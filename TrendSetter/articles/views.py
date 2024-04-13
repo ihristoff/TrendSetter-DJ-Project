@@ -23,7 +23,7 @@ class EducationalArticleCreateView(auth_mixin.LoginRequiredMixin, auth_mixin.Use
     template_name = 'articles/article_create.html'
 
     def test_func(self):
-        return self.request.user.groups.filter(name='Content creator').exists() or self.request.user.is_staff
+        return self.request.user.groups.filter(name='Content Creator').exists() or self.request.user.is_staff
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
