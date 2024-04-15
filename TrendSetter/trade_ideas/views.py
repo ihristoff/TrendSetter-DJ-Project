@@ -143,6 +143,18 @@ class TradeIdeaDetailView(auth_mixin.LoginRequiredMixin, views.DetailView):
         context = super().get_context_data(**kwargs)
         context['comment_form'] = CommentIdeaForm()
         context['comments'] = Comment.objects.filter(idea=self.object)
+        # TODO fix the names to be with capital letters
+        heatmap = self.object.category
+        if heatmap == 'Indicies':
+            heatmap = 'SPX500'
+        elif heatmap =='Forex':
+            heatmap = 'Forex'
+        elif heatmap =='Crypto':
+            heatmap = 'Crypto'
+
+        context['heatmap'] = heatmap
+        print(f"Heatmap value: {heatmap}")
+
         return context
 
     def post(self, request, *args, **kwargs):

@@ -4,7 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Avg, Count
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.core import exceptions
 
@@ -12,8 +12,13 @@ from django.core import exceptions
 from django.contrib.auth import mixins as auth_mixin
 from django.urls import reverse_lazy, reverse
 from django.views import generic as views
-from .forms import EducationalArticleForm, CommentForm, EducationalArticleFormDelete
-from .models import EducationalArticle, Comment
+from .forms import EducationalArticleForm, CommentForm, EducationalArticleFormDelete, ArticleRatingForm
+from .models import EducationalArticle, Comment, ArticleRating
+
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 UserModel = get_user_model()
 
@@ -72,74 +77,84 @@ class EducationalArticleUpdateView(auth_mixin.LoginRequiredMixin, auth_mixin.Use
 class EducationalArticleDetailView(auth_mixin.LoginRequiredMixin, views.DetailView):
     model = EducationalArticle
     template_name = 'articles/article_details.html'
-
     context_object_name = 'article'
-    # comments = Comment.objects.filter(article = self.object).order_by('-date')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['comment_form'] = CommentForm()
         context['comments'] = Comment.objects.filter(article=self.object)
-
-        # # Calculate average rating
-        # average_rating = Comment.objects.filter(article=self.object).aggregate(Avg('rating'))['rating__avg']
-        # context['average_rating'] = round(average_rating, 1) if average_rating else None
+        context['rating_form'] = ArticleRatingForm()
 
         return context
 
     def post(self, request, *args, **kwargs):
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            new_comment = form.save(commit=False)
-            new_comment.author = request.user
-            new_comment.article = self.get_object()
-            new_comment.save()
 
-            return redirect('details article', article_slug=self.get_object().slug)
-        else:
-            messages.error(request, 'Comment could not be added.')
-            return self.get(request, *args, **kwargs)  # Render the page again with validation errors
+        form_type = request.POST.get('form_type')
+        # rating= request.POST.get('rating')
 
-    #Donchos way to pass the 'slug' from url
-    # slug_url_kwarg = "article_slug"
+        if form_type == 'comment':
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                new_comment = form.save(commit=False)
+                new_comment.author = request.user
+                new_comment.article = self.get_object()
+                new_comment.save()
+                return redirect('details article', article_slug=self.get_object().slug)
+            else:
+                messages.error(request, 'Comment could not be added.')
+                return self.get(request, *args, **kwargs)  # Render the page again with validation errors
 
-    #Doncho 7 march workshop time 2:40 implements OwnerRequiredMixin
+        elif form_type == 'rating':
+            rating_form = ArticleRatingForm(request.POST)
+            if rating_form.is_valid():
+                # rating = rating_form.save(commit=False)
+                # rating.user = request.user
+                # rating.article = self.get_object()
+                # rating.save()
+                # return redirect('details article', article_slug=self.get_object().slug)
+
+                rating_value = rating_form.cleaned_data['rating']  # Assuming your form has a 'rating' field
+                article = self.get_object()
+
+                # Try to get an existing rating for the user and article
+                try:
+                    rating = ArticleRating.objects.get(user=request.user, article=article)
+
+                    # If rating exists, update it
+                    rating.rating = rating_value
+                    rating.save()
+                except ArticleRating.DoesNotExist:
+                    # If rating does not exist, create a new one
+                    rating = ArticleRating.objects.create(user=request.user, article=article, rating=rating_value)
+
+                return redirect('details article', article_slug=self.get_object().slug)
 
 
-    #chatgpt learned me go override get_object method. no needed when working with pk
+
+
+            else:
+                messages.error(request, 'Rating could not be added.')
+                return redirect('details article', article_slug=self.get_object().slug)
+                # return JsonResponse({'success': 'Rating submitted successfully'})
+
     def get_object(self, queryset=None):
         slug = self.kwargs.get('article_slug')
         return EducationalArticle.objects.get(slug=slug)
 
-
-    # <-------increase views -------->
     def get(self, request, *args, **kwargs):
         # Call the parent class's get method to retrieve the object
         response = super().get(request, *args, **kwargs)
-
         # Increment the view counter
         self.object.increase_views()
-
         return response
 
 
-# class EducationArticleListView(DetailView):
-#     model = UserModel
-#     template_name = 'articles/article_dashboard.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['articles'] = EducationArticle.objects.filter(user=self.object)
-#         return context
-
-
-
 class AllArticlesView(views.ListView):
-    # model = EducationalArticle
+
     queryset = EducationalArticle.objects.all()
     template_name = 'articles/article_dashboard.html'
     context_object_name = 'articles'
-    ordering = ['-created_at']  # Display articles in descending order of creation date
-
+    ordering = ['-created_at']
     paginate_by =6
 
     def get_queryset(self):
@@ -149,9 +164,14 @@ class AllArticlesView(views.ListView):
         context = super().get_context_data(**kwargs)
         # all_articles = EducationalArticle.objects.all().order_by('-created_at')
         # articles= context['articles']
+
+        # # Calculate average rating
+        # average_rating = Comment.objects.filter(article=self.object).aggregate(Avg('rating'))['rating__avg']
+        # context['average_rating'] = round(average_rating, 1) if average_rating else None
+        queryset = self.get_queryset().annotate(avg_rating=Avg('articlerating__rating'))
         search_query = self.request.GET.get('q')
         filter_type = self.request.GET.get('filter')
-        queryset = self.get_queryset()
+        # queryset = self.get_queryset()
         if search_query:
             queryset = queryset.filter(title__icontains=search_query)
             # Apply predefined filters
@@ -178,7 +198,6 @@ class EducationalArticleDeleteView( auth_mixin.LoginRequiredMixin, views.DeleteV
     model = EducationalArticle
     form_class = EducationalArticleFormDelete
     template_name = 'articles/article_delete.html'
-    # success_url = reverse_lazy('article_list')
     slug_url_kwarg = "article_slug"
 
     # def get_context_data(self, **kwargs):

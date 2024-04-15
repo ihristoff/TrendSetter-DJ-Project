@@ -29,6 +29,21 @@ class LoginUserView(auth_views.LoginView):
         messages.error(self.request, 'Invalid username or password. Please try again.')
         return super().form_invalid(form)
 
+    def form_valid(self, form):
+        """If the form is valid, redirect to the supplied URL."""
+        # Log the user in
+        self.user = form.get_user()
+        login(self.request, self.user)
+
+        # Redirect to the next page
+        next_page = self.request.POST.get('next', '/')
+        return redirect(next_page)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['next'] = self.request.GET.get('next', '/')
+        return context
+
 
 class LogoutUserView(auth_views.LogoutView):
     pass

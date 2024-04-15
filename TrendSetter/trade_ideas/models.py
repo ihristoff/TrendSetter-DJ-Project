@@ -35,15 +35,16 @@ class TradeIdea(models.Model):
         ('NASDAQ:AMZN', 'AMZN'),
         ('SAXO:XAUUSD', 'GOLD'),
         ('SAXO:XAGUSD', 'SILVER'),
+        ('Other', 'Other'),
     ]
 
     CATEGORY_CHOICES = [
-        ('forex', 'Forex'),
-        ('crypto', 'Crypto'),
-
-        ('indicies', 'Indicies'),
-        ('stocks', 'Stocks'),
-        ('commodites', 'Commodities'),
+        ('Forex', 'Forex'),
+        ('Crypto', 'Crypto'),
+        ('Indicies', 'Indicies'),
+        ('Stocks', 'Stocks'),
+        ('Commodites', 'Commodities'),
+        ('Other', 'Other'),
 
     ]
 

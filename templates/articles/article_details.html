@@ -2,68 +2,116 @@
 {% load static %}
 {% block content %}
     
-<link rel="stylesheet" href="{% static 'css/article_details.css' %}"/>        
+<link rel="stylesheet" href="{% static 'css/article_details.css' %}"/>      
+{#    <link rel="stylesheet" href="{% static 'css/rating.css' %}"/>   #}
+     <section class="idea-container">   
     
-       <div class="sort-navigation">
-    <a href="{% url 'update article' article.slug %}">Update article</a>
-    <a href="{% url 'delete article' article.slug %}">Delete article</a>
-    <!-- Add more sorting options as needed -->
-</div>
 <div class="article-details">
+<div class="sort-navigation">
+        <a href="{% url 'update article' article.slug %}">Update article</a>
+        <a href="{% url 'delete article' article.slug %}">Delete article</a>
+    <!-- Add more sorting options as needed -->
+    </div>
 
     <h1>{{ object.title }}</h1>
     <img id="myImg" class="article-img" src="{{ article.image.url }}" alt="{{ article.title }}">
-    <div class="article-content">{{ object.description|safe }}</div>
+    <div class="article-content">Description :  {{ object.description|safe }}</div>
 {#    <p >Click to enlarge</p> #}
     <p>Views: {{ article.views }}</p> 
-    
+    <p>Author: {{ article.author }}</p> 
 
-    <div class="add-comment">
-        <h4>Add a comment:</h4>
-        <form method="post" id="commentForm">
+    
+    
+    <div class="rating-container">
+        <script>
+           document.addEventListener('DOMContentLoaded', function() {
+            const ratingButtons = document.querySelectorAll('#ratingForm .rate-button');
+            const ratingInput = document.getElementById('ratingInput');
+        
+            ratingButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const ratingValue = this.getAttribute('data-rate');
+                    ratingInput.value = ratingValue;
+                    document.getElementById('formTypeInput').value = 'rating';
+                    document.getElementById('ratingForm').submit();
+                });
+        
+                button.addEventListener('mouseover', function() {
+                    const ratingValue = this.getAttribute('data-rate');
+                    ratingButtons.forEach(btn => {
+                        if (btn.getAttribute('data-rate') <= ratingValue) {
+                            btn.style.color = 'orange';
+                        } else {
+                            btn.style.color = '#aaa';
+                        }
+                    });
+                });
+        
+                button.addEventListener('mouseout', function() {
+                    ratingButtons.forEach(btn => {
+                        btn.style.color = '#aaa';
+                    });
+                });
+            });
+        });
+        </script>
+            
+        <p>Rate this article:</p>
+        <form method="post" id="ratingForm" action="{% url 'details article' article_slug=object.slug %}">
             {% csrf_token %}
-            {{ comment_form.as_p }}
-            <button type="submit">Submit</button>
+            
+            <input type="hidden" id="ratingInput" name="rating">
+            <input type="hidden" id="formTypeInput" name="form_type">
+            
+            <button class="rate-button" data-rate="5" type="button">&#9733;</button>
+            <button class="rate-button" data-rate="4" type="button">&#9733;</button>
+            <button class="rate-button" data-rate="3" type="button">&#9733;</button>
+            <button class="rate-button" data-rate="2" type="button">&#9733;</button>
+            <button class="rate-button" data-rate="1" type="button">&#9733;</button>
         </form>
     </div>
-   
-    {#    {% if average_rating %}#}
-    {#    <p>Average Rating: {{ average_rating }}/5</p>#}
-    {#{% else %}#}
-    {#    <p>No ratings yet.</p>#}
-    {#{% endif %}#}
+        
     
-
-    <h5>{{ comments.count }} Comments: </h5>
-    {% for comment in comments %}
-        <div class="comments">
-            <div class="comment-author">
-                <p>
-                     {% if comment.author.profile.profile_image %}
-                         
-                        <img src="{{ comment.author.profile.profile_image.url}}" alt="Author Avatar" class=" avatar">
-                     {% else %}
-                        <img src="{% static 'images/anonymous-user.webp' %}" alt="Author Avatar" class=" avatar">
-                     {% endif %}
-                  </p>
-                <p>{% if comment.author.username %}
-                        {{ comment.author.profile.username }} - {{ comment.created_at|date:"d M Y h:m" }}
-                    {% else %}
-                        {{ comment.author }} - Posted on:{{ comment.created_at|date:"d M Y h:m" }}
-                    {% endif %}
-                </p>
-            </div>
-            <p class="comment">{{ comment.content }}</p>
+        <div class="add-comment">
+            <h4>Add a comment:</h4>
+            <form method="post" id="commentForm" action="{% url 'details article' article_slug=object.slug %}" >
+                <input type="hidden" name="form_type" value="comment">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button type="submit">Submit</button>
+            </form>
         </div>
-    {% empty %}
-        <p>No comments yet.</p>
-    {% endfor %}
-
-    <div id="myModal" class="modal">
-    <span class="close">&times;</span>
-    <img class="modal-content" id="img01">
-    <div id="caption"></div>
-</div>
+    
+        <h5>{{ comments.count }} Comments: </h5>
+        {% for comment in comments %}
+            <div class="comments">
+                <div class="comment-author">
+                    <p>
+                         {% if comment.author.profile.profile_image %}
+                             
+                            <img src="{{ comment.author.profile.profile_image.url}}" alt="Author Avatar" class=" avatar">
+                         {% else %}
+                            <img src="{% static 'images/anonymous-user.webp' %}" alt="Author Avatar" class=" avatar">
+                         {% endif %}
+                      </p>
+                    <p>{% if comment.author.username %}
+                            {{ comment.author.profile.username }} - {{ comment.created_at|date:"d M Y h:m" }}
+                        {% else %}
+                            {{ comment.author }} - Posted on:{{ comment.created_at|date:"d M Y h:m" }}
+                        {% endif %}
+                    </p>
+                </div>
+                <p class="comment">{{ comment.content }}</p>
+            </div>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+    
+        <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+        <div id="caption"></div>
+    </div>
 </div>
     
 
@@ -71,30 +119,34 @@
 
  
     
-{#<script>#}
-{#// Get the modal#}
-{#var modal = document.getElementById("myModal");#}
-{##}
-{#// Get the image and insert it inside the modal - use its "alt" text as a caption#}
-{#var img = document.getElementById("myImg");#}
-{#var modalImg = document.getElementById("img01");#}
-{#var captionText = document.getElementById("caption");#}
-{#img.onclick = function(){#}
-{#  modal.style.display = "block";#}
-{#  modalImg.src = this.src;#}
-{#  captionText.innerHTML = this.alt;#}
-{#}#}
-{##}
-{#// Get the <span> element that closes the modal#}
-{#var span = document.getElementsByClassName("close")[0];#}
-{##}
-{#// When the user clicks on <span> (x), close the modal#}
-{#span.onclick = function() { #}
-{#  modal.style.display = "none";#}
-{#}#}
-{#</script>#}
-{#    #}
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+var img = document.getElementById("myImg");
+var modalImg = document.getElementById("img01");
+var captionText = document.getElementById("caption");
+img.onclick = function(){
+  modal.style.display = "block";
+  modalImg.src = this.src;
+  captionText.innerHTML = this.alt;
+}
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() { 
+  modal.style.display = "none";
+}
+</script>
+
     
-
-
+    
+    <div class="side-bar-left">
+<p>side bar left</p>
+</div>
+    
+ </section>   
 {% endblock %}

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from TrendSetter.articles.models import EducationalArticle, Comment
+from TrendSetter.articles.models import EducationalArticle, Comment, ArticleRating
 
 
 # Register your models here.
@@ -10,6 +10,11 @@ class EducationArticleAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(ArticleRating)
+class RatingArticleAdmin(admin.ModelAdmin):
     pass
 
 #

@@ -8,111 +8,7 @@
 
 
 {% block content %}
-    <style>
 
-        body {
-        {#background: cornflowerblue;#} background: black;
-        }
-        {##}
-        {#.all-cards {#}
-        {#    font-size: 13px;#}
-        {#margin-bottom: 20px;#}{#padding: 0 10px;#} display: flex;
-        {#    flex-direction: row;#}
-        {#flex-wrap: wrap;#}
-        {#    gap: 2vw;#}
-        {#align-items: center;#} 
-        {#text-align: center;#} color: white
-        {#}#}
-        {##}
-        {#.card {#}
-        {##}
-        {#    background-color: black;#}
-        {#    border-radius: 6px;#}
-        {#    box-shadow: 0 0 0 1px #363a45;#}
-        {#box-sizing: border-box;#} display: flex;
-        {#flex: 1 0 auto;#} flex-direction: column;
-        {#    width: 360px;#}
-        {#    height: 480px;#}
-        {#    overflow: hidden;#}
-        {#    padding: 20px;#}
-        {#    color: white;#}
-        {#position: relative;#}
-        {#}#}
-        {##}
-        {#.card-title {#}
-        {#    font-size: 1.25rem;#}
-        {#    text-decoration: none;#}
-        {#    color: #d1d4dc;#}
-        {#    padding-bottom: 6px;#}
-        {##}
-        {#}#}
-        {##}
-        {#.card-title:hover {#}
-        {#    color: green;#}
-        {##}
-        {#}#}
-        {##}
-        {#.card-img {#}
-        {#    background-color: black;#}
-        {#    box-shadow: 0 0 0 1px #363a45;#}
-        {#box-shadow: 0 0 0 1px #e0e3eb;#}{#height: 8rem;#} align-items: center;
-        {#    border-radius: 3px;#}
-        {#    box-sizing: border-box;#}
-        {#    display: block;#}
-        {#    max-height: 160px;#}
-        {#    width: 100%;#}
-        {#    object-fit: cover;#}
-        {#    margin-bottom: 6px;#}
-        {##}
-        {#}#}
-        {##}
-        {#li {#}
-        {#    padding: 10px;#}
-        {#}#}
-        {##}
-        {##}
-        {#/* Pagination */#}
-        {#.pagination-container {#}
-        {#    margin-top: 20px;#}
-        {#    display: flex;#}
-        {#    justify-content: center;#}
-        {#}#}
-        {##}
-        {#.pagination {#}
-        {#    list-style: none;#}
-        {#    padding: 0;#}
-        {#    display: flex;#}
-        {#    gap: 10px;#}
-        {#}#}
-        {##}
-        {#.pagination .page-item {#}
-        {#    display: inline-block;#}
-        {#}#}
-        {##}
-        {#.pagination .page-link {#}
-        {#    padding: 8px 12px;#}
-        {#    background-color: green;#}
-        {#    color: white;#}
-        {#    border: 1px solid green;#}
-        {#    border-radius: 4px;#}
-        {#    text-decoration: none;#}
-        {#    cursor: pointer;#}
-        {#    transition: background-color 0.3s ease;#}
-        {#}#}
-        {##}
-        {#.pagination .page-link:hover,#}
-        {#.pagination .page-item.active .page-link {#}
-        {#    background-color: #40c964;#}
-        {#    border-color: #40c964;#}
-        {#}#}
-        {##}
-        {#.pagination .page-link:focus {#}
-        {#    outline: none;#}
-        {#    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);#}
-        {#}#}
-
-
-    </style>
     
     <link rel="stylesheet" href="{% static 'css/dashboard-cards.css' %}"/>       
 <div class="main">
@@ -161,18 +57,27 @@
 
             <img class="card-img" src="{{ article.image.url }}" alt="{{ article.title }}" />
 
-            <p class="card-text">{{ article.description|safe |truncatechars:200|sanitize }}...</p>
+            <p class="card-description ">{{ article.description|safe |truncatechars:200|sanitize }}...</p>
 
             <ul class="list-group list-group-flush">
+                <p>Average Rating: {{ article.avg_rating|floatformat:1 }}</p>
+                <div class="star-ratings-css">
+                 
+                    <div class="star-ratings-css-top" style="width: 74.8%"  style="width: {{ width }}%">
+                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                    <div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                </div>
+                
                 <li class="list-group-item">Category</li>
+{#                <p>comment icon N</p>   {{ article.comments.count }}#}
                 <li class="list-group-item">
                     <small class="text-muted">Published {{ article.created_at }}</small>
                 </li>
-                <li class="list-group-item">Vestibulum at eros</li>
+          
             </ul>
             <div class="card-body">
                 <a href="#" class="card-link">Read More</a>
-                <a href="#" class="card-link">See Gallery</a>
+    
             </div>
         </div>
     {% endfor %}
