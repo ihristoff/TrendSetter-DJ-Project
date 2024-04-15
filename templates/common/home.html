@@ -102,40 +102,60 @@
 {% extends 'base.html' %}
 {% load custom_filters %}
 {% load static %}
-
-{#{% include 'articles/article_dashboard.html' %}#}
 {% block content %}
-{#    <link rel="stylesheet" href="{% static 'css/home.css' %}">#}
-{#    <div class="background-img">#}
-{#    <img  src="{% static "images/openart-e3b81b435459467ead2de190b4d5e7cd.png"%}" >#}
-{#    </div>#}
+     
+    <style>
+  body {
+    background-image: url('{% static 'images/bckg-image.png' %}');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+</style>
 
-<div class="main" >
-    <div class="right item" ><h1>LEARN</h1>
-    
-    </div>
-    <div class="center item"><h1>SHARE</h1>
+    <div class="main" data-bg-url="{% static 'images/home-background.png' %}">
+{#        <div class="right item"><h1>LEARN</h1>#}
+{##}
+{#        </div>#}
+        <div class="center item" >
+            
+            <div class="home-card">
+                <p>Get premium education</p>
+                <h3>Articles: {{ articles_count }}</h3>
+                <h3>Authors: {{ content_creators_count }}</h3>
+                <h1>LEARN</h1>
+            </div>
+            
+            <div class="home-card">
+                <h1>SHARE</h1>
+                <p>Join our community</p>
+                <p>Share your trading idea</p>
+                <h3>Community Users: {{ users_count }} </h3>
+                <h3>Ideas: {{ ideas_count }}</h3>
+            </div>
+            
+            <div class="home-card">
+                <img src="{% static 'images/grow-logo.png' %}" alt="logo"/>                  
+                <h1>GROW</h1>
+            </div>
+            
+            
+       
+        
+{#        <p>Number of Registered Users Online: {{ online_users_count }}</p>#}
         
         
-                           {% if request.user|is_content_creator %}
-    <p>User is a Content Creator</p>
-{% else %}
-    <p>User is not a Content Creator</p>
-{% endif %}
-        
-{#        {% include 'trade_ideas/trade_ideas_dashboard.html' with ideas=all_ideas %}#}
-    </div>
-    <div class="left item"><h1>CROW</h1>
-    
-    
+
+            {#        {% include 'trade_ideas/trade_ideas_dashboard.html' with ideas=all_ideas %}#}
+        </div>
+  /
+
     </div>
 
-</div>
-    
-    
-    {%  include 'common/tradingview-ticker.html' %}
 
-<!-- TradingView Widget END -->
+    {% include 'common/tv-widgets/tradingview-ticker.html' %}
+
+    <!-- TradingView Widget END -->
 {% endblock %}
 
 

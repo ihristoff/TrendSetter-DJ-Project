@@ -1,5 +1,5 @@
 from django import forms
-from .models import EducationalArticle, Comment
+from .models import EducationalArticle, Comment, ArticleRating
 from django import forms
 from ckeditor.widgets import CKEditorWidget
 
@@ -39,6 +39,11 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields =['content']
+
+class ArticleRatingForm(forms.ModelForm):
+    class Meta:
+        model = ArticleRating
+        fields = ['rating']
 
 
 class EducationalArticleFormDelete(forms.ModelForm):

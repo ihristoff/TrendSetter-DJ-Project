@@ -25,9 +25,11 @@
                   {{ form.password|as_crispy_field }}
              </div>
          </div>
+        <input type="hidden" value="{{next}}" name="next">
         <button class="btn-primary" type="submit">Login</button>
+        
         <p>Don't have an account? <a href="{% url 'register' %}">Join here </a></p>
-{#        <input type="hidden" value="{{next}}" name="next">#}
+        
         {% csrf_token %}
     </form>
        

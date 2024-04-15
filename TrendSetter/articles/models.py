@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from django.db import models
@@ -38,8 +39,8 @@ class EducationalArticle(models.Model):
         editable=False,  # Readonly, only in the Django App, not in the DB
     )
 
-    def __str__(self):
-        return self.title
+    # def __str__(self):
+    #     return self.title
 
 
     def save(self, *args, **kwargs):
@@ -50,27 +51,12 @@ class EducationalArticle(models.Model):
 
         super().save(*args, **kwargs)
 
-    def __str__(self):
-        return f'{self.user}\'s Post- {self.title}'
+    # def __str__(self):
+    #     return f'{self.user}\'s Post- {self.title}'
 
     def increase_views(self):
         self.views += 1
         self.save()
-
-    # @classmethod
-    # def get_most_viewed(cls, limit=5):
-    #     return cls.objects.annotate(num_views=Count('views')).order_by('-num_views')[:limit]
-    #
-    # @classmethod
-    # def get_most_commented(cls, limit=5):
-    #     return cls.objects.annotate(num_comments=Count('comment')).order_by('-num_comments')[:limit]
-    #
-    # @classmethod
-    # def get_most_recent(cls, limit=5):
-    #     return cls.objects.order_by('-created_at')[:limit]
-
-
-
 
 class Comment(models.Model):
     content = models.TextField()
@@ -81,3 +67,19 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.author}\'s comment- {self.created_at}'
+
+
+class ArticleRating(models.Model):
+    user = models.ForeignKey(UserModel, models.CASCADE)
+    article = models.ForeignKey(EducationalArticle, models.CASCADE,null=True, blank=True)
+    rating = models.IntegerField(
+        default=0,
+        validators=[
+            MaxValueValidator(5),
+            MinValueValidator(1),
+        ]
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.pk)

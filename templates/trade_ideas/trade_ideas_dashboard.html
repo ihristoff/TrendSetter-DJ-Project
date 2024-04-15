@@ -81,7 +81,7 @@
 
                     <img class="card-img" src="{{ idea.idea_image.url }}" alt="{{ idea.title }}"/>
 
-                    <p class="card-text">{{ idea.description|safe |truncatechars:200|sanitize }}...</p>
+                    <p class="card-description">{{ idea.description|safe |truncatechars:200|sanitize }}...</p>
 
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Category</li>
