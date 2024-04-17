@@ -4,53 +4,62 @@
 
 
 {% block content %}
-    <link rel="stylesheet" href="{% static 'css/accounts.css' %}"/>    
-       
-        <div class="main-container">
-        <h1>{{ request.user }} Profile Details</h1>
-        <div class="profile-info">
+
+    <div class="main-container">
+    <div class="profile-info">
+        <h1>Profile Details</h1>
+
+    </div>
+
+    <div class="profile-info">
         <div class="profile-image">
             {% if object.profile_image %}
                 <img src="{{ object.profile_image.url }}" class="profile-image" alt="profile_picture">
-           {% else %}
-                <img src="{% static 'images/anonymous-user.webp' %}" alt="default_profile_picture" class="profile-image">
-           {% endif %}
-        </div>
-        <div class="details">
-            {% if object.age %}
-            <p>Age: {{ object.age }}</p>
+            {% else %}
+                <img src="{% static 'images/anonymous-user.webp' %}" alt="default_profile_picture"
+                     class="profile-image">
             {% endif %}
-            {% if object.experience %}
-            <p>Experience: {{ object.experience }}</p>
+        </div>
+        <div class="profile-details">
+            {% if object.username %}
+                <p>Username: {{ object.username }} </p>
+            {% else %}
+                <p>Regular user</p>
+            {% endif %}
+            {% if object.show_email %}
+                <p>Email: {{ object.user }}</p>
+            {% endif %}
+            {% if object.trading_experience %}
+                <p>Experience: {{ object.trading_experience }}</p>
             {% endif %}
             {% if object.location %}
                 <p>Location: {{ object.location }}</p>
             {% endif %}
-            
-            
-{#            {% for field in object.objects.all() %}#}
-{#                <p>{{ field }}</p>#}
-{#            {% endfor %}#}
-        
-        
-            {% if request.user.comment_set.count  %}
-            <p>Comments {{ request.user.comment_set.count }}</p>
+            {% if object.age %}
+                <p>Age: {{ object.age }}</p>
             {% endif %}
-        
-{#My posts#}
+            {% if object.bio %}
+                <p>Bio: {{ object.bio }}</p>
+            {% endif %}
+
+            {% if request.user.comment_set.count %}
+                <p>Comments {{ request.user.comment_set.count }}</p>
+            {% endif %}
+
+            {#My posts#}
             {#last login  previous login#}
-{#        followers and following#}
+            {#        followers and following#}
 
         </div>
-        </div>
-        <div class="profile_control">
-        <button><a href="{% url 'profile update' pk=request.user.pk %}" class="link-button">Edit Profile</a></button>
-        <button><a href="{% url 'profile delete' pk=request.user.pk %}" class="link-button danger">Delete Profile</a></button>
-        <button><a href="{% url 'profile change password' pk=request.user.pk %}" class="link-button">Change Password</a></button>
+        {% if object.user == request.user or user.is_staff %}
             </div>
-{#        <button><a href="{% url 'reservation-list' pk=object.pk %}" class="link-button">Manage Reservations</a></button>#}
-{#        <button><a href="{% url 'client-reviews-list' pk=object.pk %}" class="link-button">My Reviews</a></button>#}
- 
+            <div class="profile_control">
+                <a href="{% url 'profile update' pk=request.user.pk %}" class="nav-link">Edit Profile</a>
+                <a href="{% url 'profile delete' pk=request.user.pk %}" class="nav-link">Delete Profile</a>
+                <a href="{% url 'profile change password' pk=request.user.pk %}" class="nav-link">Change Password</a>
+            </div>
+        {% endif %}
+
 {% endblock %}
 
 

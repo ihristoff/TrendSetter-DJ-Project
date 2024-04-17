@@ -14,7 +14,20 @@ UserModel = get_user_model()
 
 
 class EducationalArticle(models.Model):
-    user = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING, related_name='education_articles')
+
+    CATEGORY_CHOICES = {
+        'Chart patterns': 'Chart patterns',
+        'Trendlines': 'Trendlines',
+        'Candlesticks': 'Candlesticks',
+        'Supply and Demand': 'Supply and Demand',
+        'Elliott Wave Theory': 'Elliott Wave Theory',
+        'Volume Analysis': 'Volume Analysis',
+        'Other': 'Other',
+
+    }
+
+
+    user = models.ForeignKey(UserModel, on_delete=models.SET_NULL, related_name='education_articles', null=True, blank=True)
     title = models.CharField(max_length=255, unique=True,)
 
 
@@ -24,13 +37,13 @@ class EducationalArticle(models.Model):
         validators=(image_size_validator,),
     )
 
-    # category = models.CharField(max_length=25, )
+    category = models.CharField(max_length=25, choices = CATEGORY_CHOICES, default='Other')
     description = RichTextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     views = models.PositiveIntegerField(default=0)
 
-    # gallery = models.ManyToManyField('Gallery', blank=True)
+
 
     slug = models.SlugField(
         unique=True,
@@ -38,9 +51,6 @@ class EducationalArticle(models.Model):
         blank=True,
         editable=False,  # Readonly, only in the Django App, not in the DB
     )
-
-    # def __str__(self):
-    #     return self.title
 
 
     def save(self, *args, **kwargs):
@@ -51,8 +61,8 @@ class EducationalArticle(models.Model):
 
         super().save(*args, **kwargs)
 
-    # def __str__(self):
-    #     return f'{self.user}\'s Post- {self.title}'
+    def __str__(self):
+        return f'{self.user}\'s Post- {self.title}'
 
     def increase_views(self):
         self.views += 1

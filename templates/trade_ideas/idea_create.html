@@ -1,12 +1,39 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Share your Trading Idea</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Share">
-    </form>
+
+    <div class="create-form">
+        <h2>Share your Trading Idea</h2>
+
+        <form method="post" enctype="multipart/form-data" class="create-article">
+            <div class="form-group">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-field">
+                        {{ field.label_tag }}
+                        {% if field.help_text %}
+                            <div class="helptext">
+                                {{ field.help_text }}
+                            </div>
+                        {% endif %}
+                        {% if field.errors %}
+                            <div class="error-message">
+                                {% for error in field.errors %}
+                                    <p class="error-text">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        {{ field }}
+                    </div>
+                {% endfor %}
+
+
+                {#        {{ form.as_p }}#}
+                <input type="submit" value="Share">
+            </div>
+        </form>
+    </div>
 {% endblock %}
 
 

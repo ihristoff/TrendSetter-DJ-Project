@@ -12,17 +12,6 @@
 
     <link rel="stylesheet" href="{% static 'css/reset.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <style>
-        body {
-        {#background-image: #}
-        {#linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent),#}
-        {#linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent),#}
-        {#    url('{% static "images/openart-e3b81b435459467ead2de190b4d5e7cd.png" %}') ;#} 
-            background-color: orange;
-            z-index: -10;
-
-        }
-    </style>
 
 
 </head>
@@ -40,8 +29,8 @@
         </div>
 
         <nav class="navigation">
-        
-        
+
+
             <ul role="list">
                 <li class="nav-item"><a href="{% url 'education articles' %}" class="nav-link ">Education</a></li>
                 <div class="divider"></div>
@@ -51,10 +40,6 @@
                 {% if not request.user.is_authenticated %}
 
                     <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Login</a></li>
-                
-                    
- 
-
 
                 {% else %}
 
@@ -67,7 +52,6 @@
                         <li class="nav-item"><a href="{% url 'create article' %}" class="nav-link">Create Article</a>
                         </li>
                     {% endif %}
-
 
 
                     <div class="profile">
@@ -113,16 +97,13 @@
 
 </section>
 
-
-
-{#<section id="bottom">#}
 <footer>
 
     <div class="footer-left">
 
         <div class="created-by">
             <p>Created by ihristoff</p>
-             <p>student at <a href="https://softuni.bg" class="softuni-link">SoftUni</a></p>
+            <p>student at <a href="https://softuni.bg" class="softuni-link">SoftUni</a></p>
         </div>
         <div class="footer-center">
             <ul role="list">
@@ -142,7 +123,7 @@
         </div>
 
         <div class="socials">
-                               
+
             <div class="social-icons">
                 <a href="https://discord.gg/SH7ERRZ9" class="footer-link"><i
                         class="fa-brands fa-discord"></i></a>

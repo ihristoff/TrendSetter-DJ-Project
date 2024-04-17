@@ -113,6 +113,9 @@ class TradeIdeasDashboardView(views.ListView):
         return context
 
     def get_most_viewed(self, queryset):
+        annotated_queryset = queryset.annotate(num_views=Count('views'))
+        ordered_queryset = annotated_queryset.order_by('-num_views')
+        print(ordered_queryset.query)
         return queryset.annotate(num_views=Count('views')).order_by('-num_views')
     def get_most_commented(self, queryset):
         return queryset.annotate(num_comments=Count('comment')).order_by('-num_comments')

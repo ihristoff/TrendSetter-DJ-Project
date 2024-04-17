@@ -1,124 +1,153 @@
 {% extends "base.html" %}
 {% load custom_filters %}
-
 {% load url_replace %}
 {% load static %}
 {% load humanize %}
 {% load custom_filters %}
-
-
 {% block content %}
 
-    
-    <link rel="stylesheet" href="{% static 'css/dashboard-cards.css' %}"/>       
-<div class="main">
+    <div class="idea-container">
+        <div class="main">
 
-    <div class="filter-buttons">
-        <a class="nav-link" href="?filter=most_viewed">Most Viewed</a>
-        <div class="divider"></div>
-        <a class="nav-link" href="?filter=most_commented">Most Commented</a>
-        <div class="divider"></div>
-        <a class="nav-link" href="?filter=most_recent">Most Recent</a>
-      
-        <div class="search">
-            <form method="get" action="{% url 'trade ideas dashboard' %}" class="filter-form">
-        
-                <select name="category" class="filter-select">
-                    <option value="">All Categories</option>
-                    {% for value, label in categories %}
-                        <option value="{{ value }}" {% if category == value %}selected{% endif %}>{{ label }}</option>
-                    {% endfor %}
-                </select>
-                 <button type="submit" class="filter-button">
-                    <i class="fa fa-search"></i> <!-- Magnifying glass icon -->
-                </button>
+            <div class="filter-buttons">
+                <a class="nav-link" href="?filter=most_viewed">Most Viewed</a>
                 <div class="divider"></div>
-        
-            
-                <div class="title-search">
-                <input type="text" name="q" placeholder="Search by title" value="{{ request.GET.q }}" class="filter-input">
-                <button type="submit" class="filter-button">
-                    <i class="fa fa-search"></i> <!-- Magnifying glass icon -->
-                </button>
-                </div>    
-            
-            </form>
-           </div>
+                <a class="nav-link" href="?filter=most_commented">Most Commented</a>
+                <div class="divider"></div>
+                <a class="nav-link" href="?filter=most_recent">Most Recent</a>
+
+                <div class="search">
+                    <form method="get" action="{% url 'education articles' %}" class="filter-form">
+
+                        <select name="category" class="filter-select">
+                            <option value="">All Categories</option>
+                            {% for value, label in categories %}
+                                <option value="{{ value }}"
+                                        {% if category == value %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="divider"></div>
+
+
+                        <div class="title-search">
+                            <input type="text" name="q" placeholder="Search by title" value="{{ request.GET.q }}"
+                                   class="filter-input">
+                            <button type="submit" class="filter-button">
+                                <i class="fa fa-search"></i> <!-- Magnifying glass icon -->
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+
+
+            <div class="all-cards">
+                {% for article in articles %}
+                    <a class="card-link" href="{% url 'details article' article.slug %}">
+                        <div class="card">
+                            <div class="card-top">
+                                <h2 class="card-title">{{ article.title|upper }}</h2>
+                                <p><i class="fa-solid fa-list"></i> {{ article.category }}</p>
+
+                                <img class="card-img" src="{{ article.image.url }}" alt="{{ article.title }}"/>
+                            </div>
+                            <p class="card-description ">{{ article.description|safe |truncatechars:200|sanitize }}...</p>
+
+                            <div class="info-1">
+                                <p class="card-item-icon"><i class="fa-regular fa-eye"></i> {{ article.views }}</p>
+
+                                <div class="rating">
+                                    {% if article.avg_rating %}
+                                        {% for i in "12345" %}
+                                            {% if i <= article.avg_rating|floatformat:0 %}
+                                                <span class="star">&#9733;</span>
+                                            {% else %}
+                                                <span class="star">&#9734;</span>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <span class="avg-rating">{{ article.avg_rating|floatformat:1 }}</span>
+                                    {% else %}
+                                        <span class="star">&#9734;</span>
+                                        <span class="star">&#9734;</span>
+                                        <span class="star">&#9734;</span>
+                                        <span class="star">&#9734;</span>
+                                        <span class="star">&#9734;</span>
+
+                                    {% endif %}
+                                </div>
+
+
+                            </div>
+
+                            <div class="info-2">
+                                <div class="card-info-left">
+                                    {% if article.user.profile.username %}
+                                        <p class="card-item"><small class="card-item small">
+                                            by {{ article.user.profile.username }}</small></p>
+                                    {% elif article.user %}
+                                        <p class="card-item"><small class="card-item small">
+                                            by {{ article.user }}</small></p>
+                                    {% else %}
+                                        <p class="card-item"><small class="card-item small"> by Editor</small></p>
+                                    {% endif %}
+                                    <p class="card-item"><small
+                                            class="card-item small">Published {{ article.created_at }}</small></p>
+                                </div>
+                                <p class="card-item-icon"><i
+                                        class="fa-regular fa-comments"></i> {{ article.num_comments }}</p>
+                            </div>
+
+
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination-container">
+                <ul class="pagination">
+                    {% if articles.has_previous %}
+                        <li class="page-item">
+                            <a href="?page=1" class="page-link">&laquo; First</a>
+                        </li>
+                        <li class="page-item">
+                            <a href="?page={{ articles.previous_page_number }}" class="page-link">Previous</a>
+                        </li>
+                    {% endif %}
+
+                    {% if articles.paginator.num_pages > 1 %}
+                        {% for i in articles.paginator.page_range %}
+                            {% if articles.number == i %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ i }}</span>
+                                </li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if articles.has_next %}
+                        <li class="page-item">
+                            <a href="?page={{ articles.next_page_number }}" class="page-link">Next</a>
+                        </li>
+                        <li class="page-item">
+                            <a href="?page={{ articles.paginator.num_pages }}" class="page-link">Last &raquo;</a>
+                        </li>
+                    {% endif %}
+
+
+                </ul>
+            </div>
+
+
+        </div>
+        <div class="divider"></div>
+        <div class="side-bar-left"></div>
 
     </div>
-  
-
-
-
-<div class="all-cards">
-    {% for article in articles %}
-        <div class="card">
-            <a class="card-title" href="{% url 'details article' article.slug %}">{{ article.title|upper }}</a>
-
-            <img class="card-img" src="{{ article.image.url }}" alt="{{ article.title }}" />
-
-            <p class="card-description ">{{ article.description|safe |truncatechars:200|sanitize }}...</p>
-
-            <ul class="list-group list-group-flush">
-                <p>Average Rating: {{ article.avg_rating|floatformat:1 }}</p>
-                <div class="star-ratings-css">
-                 
-                    <div class="star-ratings-css-top" style="width: 74.8%"  style="width: {{ width }}%">
-                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-                    <div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-                </div>
-                
-                <li class="list-group-item">Category</li>
-{#                <p>comment icon N</p>   {{ article.comments.count }}#}
-                <li class="list-group-item">
-                    <small class="text-muted">Published {{ article.created_at }}</small>
-                </li>
-          
-            </ul>
-            <div class="card-body">
-                <a href="#" class="card-link">Read More</a>
-    
-            </div>
-        </div>
-    {% endfor %}
-</div>
-
-<!-- Pagination -->
-<div class="pagination-container">
-    <ul class="pagination">
-        {% if articles.has_previous %}
-            <li class="page-item">
-                <a href="?page=1" class="page-link">&laquo; First</a>
-            </li>
-            <li class="page-item">
-                <a href="?page={{ articles.previous_page_number }}" class="page-link">Previous</a>
-            </li>
-        {% endif %}
-
-        {% for i in articles.paginator.page_range %}
-            {% if articles.number == i %}
-                <li class="page-item active">
-                    <span class="page-link">{{ i }}</span>
-                </li>
-            {% else %}
-                <li class="page-item">
-                    <a href="?page={{ i }}" class="page-link">{{ i }}</a>
-                </li>
-            {% endif %}
-        {% endfor %}
-
-        {% if articles.has_next %}
-            <li class="page-item">
-                <a href="?page={{ articles.next_page_number }}" class="page-link">Next</a>
-            </li>
-            <li class="page-item">
-                <a href="?page={{ articles.paginator.num_pages }}" class="page-link">Last &raquo;</a>
-            </li>
-        {% endif %}
-    </ul>
-</div>
-
-    
-</div>
-
 {% endblock %}

@@ -1,11 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic as views
 from django.contrib.auth import views as auth_views, get_user_model, login, authenticate, logout
 from django.contrib.auth import forms as auth_forms
-
+from django.contrib.auth import mixins as auth_mixin
 from django.urls import reverse_lazy, reverse
 
 from TrendSetter.accounts.forms import AccountUserCreationForm, ProfileForm, ChangePassword
@@ -14,6 +15,13 @@ from TrendSetter.articles.models import EducationalArticle, Comment
 from TrendSetter.trade_ideas.models import TradeIdea
 
 UserModel = get_user_model()
+
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.shortcuts import get_object_or_404
+from .models import Profile
+
+
+
 
 class LoginUserView(auth_views.LoginView):
     template_name = 'accounts/login-page.html'
@@ -78,7 +86,7 @@ class RegisterUserView(views.CreateView):
 
 
 
-class DetailsProfileView(LoginRequiredMixin, views.DetailView):
+class DetailsProfileView(auth_mixin.LoginRequiredMixin, views.DetailView):
     queryset = Profile.objects \
         .prefetch_related("user") \
         .all()
@@ -89,11 +97,24 @@ class DetailsProfileView(LoginRequiredMixin, views.DetailView):
     fields = ['age', 'trading_experience', 'location']
 
 
-class UpdateProfileView(LoginRequiredMixin, views.UpdateView):
-    queryset = Profile.objects.all()
-
-    fields = ('profile_image','date_of_birth', 'age',  'trading_experience',  'location' )
+class UpdateProfileView(auth_mixin.LoginRequiredMixin, auth_mixin.UserPassesTestMixin, views.UpdateView):
+    model=Profile
+    form_class = ProfileForm
+    # fields = ('profile_image','date_of_birth', 'age',  'trading_experience',  'location' )
     template_name = 'accounts/update-profile.html'
+    pk_url_kwarg = 'pk'
+
+
+    def test_func(self):
+        profile = self.get_object()
+        return self.request.user == profile.user
+
+    def handle_no_permission(self):
+        raise PermissionDenied("You do not have permission to update this profile.")
+
+    def get_object(self, queryset=None):
+        pk = self.kwargs.get(self.pk_url_kwarg)
+        return get_object_or_404(Profile, pk=pk)
 
     def get_success_url(self):
         return reverse('profile details', kwargs={'pk': self.object.pk})
@@ -113,14 +134,14 @@ class UpdateProfileView(LoginRequiredMixin, views.UpdateView):
     #     form.fields["date_of_birth"].label = "Birthday"
     #     return form
 
-class ChangePasswordProfileView(LoginRequiredMixin, auth_views.PasswordChangeView):
+class ChangePasswordProfileView(auth_mixin.LoginRequiredMixin, auth_views.PasswordChangeView):
     form_class = ChangePassword
 
     template_name = "accounts/change-password.html"
     success_url = reverse_lazy('login')
 
 
-class DeleteProfileView(LoginRequiredMixin, views.DeleteView):
+class DeleteProfileView(auth_mixin.LoginRequiredMixin, views.DeleteView):
     model=UserModel
     template_name = 'accounts/delete-profile.html'
 
@@ -149,3 +170,8 @@ class DeleteProfileView(LoginRequiredMixin, views.DeleteView):
 
     def get_success_url(self):
         return reverse('index')
+
+
+
+
+
