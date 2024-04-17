@@ -1,5 +1,4 @@
-
-document.getElementById("profileBtn").addEventListener("click", function() {
+document.getElementById("profileBtn").addEventListener("click", function () {
     var dropdownMenu = document.getElementById("dropdownMenu");
     if (dropdownMenu.style.display === "none" || dropdownMenu.style.display === "") {
         dropdownMenu.style.display = "block";
@@ -9,7 +8,7 @@ document.getElementById("profileBtn").addEventListener("click", function() {
 });
 
 // Close the dropdown menu when clicking outside of it
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (!event.target.matches('.profile-img')) {
         var dropdowns = document.getElementsByClassName("dropdown-menu");
         var i;
@@ -21,6 +20,28 @@ window.onclick = function(event) {
         }
     }
 }
+
+//--------- animation counter ----------
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const counter = document.querySelector('.counter');
+    const number = counter.querySelector('.number');
+    const targetCount = parseInt(number.getAttribute('data-count'));
+    let currentCount = 0;
+
+    const updateCount = () => {
+        if (currentCount < targetCount) {
+            currentCount++;
+            number.textContent = currentCount;
+            setTimeout(updateCount, 20); // Adjust the timeout for faster or slower animation
+        } else {
+            number.textContent = targetCount;
+        }
+    };
+
+    updateCount();
+});
 
 
 //
@@ -47,15 +68,35 @@ window.onclick = function(event) {
 //
 
 
-//----------rating js------------
-// $(".rating a").on('click', function(e){
-// 	let value = $(this).data('value');
-//    $.ajax({
-//       url: "some_url",
-//       type: 'POST',
-//       data: {'rating': value},
-//       success: function (d){
-//        // some processing
-//       }
-//    })
-// });
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const ratingButtons = document.querySelectorAll('#ratingForm .rate-button');
+    const ratingInput = document.getElementById('ratingInput');
+
+    ratingButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const ratingValue = this.getAttribute('data-rate');
+            ratingInput.value = ratingValue;
+            document.getElementById('formTypeInput').value = 'rating';
+            document.getElementById('ratingForm').submit();
+        });
+
+        button.addEventListener('mouseover', function () {
+            const ratingValue = this.getAttribute('data-rate');
+            ratingButtons.forEach(btn => {
+                if (btn.getAttribute('data-rate') <= ratingValue) {
+                    btn.style.color = 'orange';
+                } else {
+                    btn.style.color = '#aaa';
+                }
+            });
+        });
+
+        button.addEventListener('mouseout', function () {
+            ratingButtons.forEach(btn => {
+                btn.style.color = '#aaa';
+            });
+        });
+    });
+});

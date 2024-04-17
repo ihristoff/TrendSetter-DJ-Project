@@ -3,23 +3,11 @@
 {% load humanize %}
 {% load custom_filters %}
 {% block content %}
-    <link rel="stylesheet" href="{% static 'css/dashboard-cards.css' %}"/>
-    <style>
-        body {
-            background: black;
-        }
-    </style>
-
-
-
-    {#    <form method="get" action="{% url 'trade ideas dashboard' %}">#}
-    {#        <input type="text" name="q" placeholder="Search by title" value="{{ request.GET.q }}">#}
-    {#        <input type="submit" value="Search">#}
-    {#    </form>#}
-
-
-
+ 
+<div class="idea-container">
     <div class="main">
+        
+        
         <div class="page-info">
             <p>Community </p>
             <h1>IDEAS!</h1>
@@ -138,4 +126,8 @@
         </div>
     </div>
 
+    <div class="divider"></div>
+    <div class="side-bar-left"></div>
+    
+</div>    
 {% endblock %}

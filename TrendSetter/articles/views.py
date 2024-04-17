@@ -4,15 +4,16 @@ from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Avg, Count
-from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect, JsonResponse, Http404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core import exceptions
 
 # Create your views here.
 from django.contrib.auth import mixins as auth_mixin
 from django.urls import reverse_lazy, reverse
 from django.views import generic as views
-from .forms import EducationalArticleForm, CommentForm, EducationalArticleFormDelete, ArticleRatingForm
+from .forms import EducationalArticleForm, CommentForm, EducationalArticleFormDelete, ArticleRatingForm, \
+    EducationalArticleUpdateForm
 from .models import EducationalArticle, Comment, ArticleRating
 
 import logging
@@ -47,13 +48,13 @@ class EducationalArticleCreateView(auth_mixin.LoginRequiredMixin, auth_mixin.Use
 
 class EducationalArticleUpdateView(auth_mixin.LoginRequiredMixin, auth_mixin.UserPassesTestMixin, views.UpdateView):
     model = EducationalArticle
-    form_class = EducationalArticleForm
+    form_class = EducationalArticleUpdateForm
     template_name = 'articles/article_update.html'
     # success_url = reverse_lazy('article_list')
     slug_url_kwarg = "article_slug"
 
     def test_func(self):
-        return self.request.user.is_staff
+        return self.request.user.groups.filter(name='Content Creator').exists() or self.request.user.is_staff
     def get_success_url(self):
         return reverse("details article", kwargs={
            "article_slug": self.object.slug,
@@ -75,7 +76,7 @@ class EducationalArticleUpdateView(auth_mixin.LoginRequiredMixin, auth_mixin.Use
 
 
 class EducationalArticleDetailView(auth_mixin.LoginRequiredMixin, views.DetailView):
-    model = EducationalArticle
+
     template_name = 'articles/article_details.html'
     context_object_name = 'article'
 
@@ -129,9 +130,6 @@ class EducationalArticleDetailView(auth_mixin.LoginRequiredMixin, views.DetailVi
 
                 return redirect('details article', article_slug=self.get_object().slug)
 
-
-
-
             else:
                 messages.error(request, 'Rating could not be added.')
                 return redirect('details article', article_slug=self.get_object().slug)
@@ -139,7 +137,16 @@ class EducationalArticleDetailView(auth_mixin.LoginRequiredMixin, views.DetailVi
 
     def get_object(self, queryset=None):
         slug = self.kwargs.get('article_slug')
-        return EducationalArticle.objects.get(slug=slug)
+        # return EducationalArticle.objects.get(slug=slug)
+
+        try:
+            return EducationalArticle.objects.get(slug=slug)
+        except EducationalArticle.DoesNotExist:
+            raise Http404("Article does not exist")
+        except EducationalArticle.user.RelatedObjectDoesNotExist:
+            article = get_object_or_404(EducationalArticle, slug=slug)
+            article.user = None
+            return article
 
     def get(self, request, *args, **kwargs):
         # Call the parent class's get method to retrieve the object
@@ -165,10 +172,7 @@ class AllArticlesView(views.ListView):
         # all_articles = EducationalArticle.objects.all().order_by('-created_at')
         # articles= context['articles']
 
-        # # Calculate average rating
-        # average_rating = Comment.objects.filter(article=self.object).aggregate(Avg('rating'))['rating__avg']
-        # context['average_rating'] = round(average_rating, 1) if average_rating else None
-        queryset = self.get_queryset().annotate(avg_rating=Avg('articlerating__rating'))
+        queryset = self.get_queryset().annotate(avg_rating=Avg('articlerating__rating'), num_comments=Count('comment'), )
         search_query = self.request.GET.get('q')
         filter_type = self.request.GET.get('filter')
         # queryset = self.get_queryset()
@@ -189,6 +193,9 @@ class AllArticlesView(views.ListView):
         return context
 
     def get_most_viewed(self, queryset):
+        annotated_queryset = queryset.annotate(num_views=Count('views'))
+        ordered_queryset = annotated_queryset.order_by('-num_views')
+        print(ordered_queryset.query)
         return queryset.annotate(num_views=Count('views')).order_by('-num_views')
     def get_most_commented(self, queryset):
         return queryset.annotate(num_comments=Count('comment')).order_by('-num_comments')

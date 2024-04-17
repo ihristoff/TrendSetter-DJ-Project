@@ -3,34 +3,42 @@
 {#{% load custom_filters %}#}
 {% load crispy_forms_filters %}
 
-{% block content %}
-<link rel="stylesheet" href="{% static 'css/accounts.css' %}"/>    
-    <div class="main-container">
-    <form action = "{% url 'profile update' pk=object.pk %}" method = 'post' enctype="multipart/form-data" class="form-container">
-{#        <form action = {% url 'login' %}?next={{ next }}   method='post'         #}
-       <div class="form-group">
-        {% for field in form %}
-    <div class="form-group">
-        {{ field.label_tag }}
-        {{ field}}
-        {% if field.help_text %}
-        <small class="form-text text-muted">{{ field.help_text }}</small>
-        {% endif %}
-        {% if field.errors %}
-        <div class="alert alert-danger">
-            {% for error in field.errors %}
-            <strong>{{ error|escape }}</strong><br>
-            {% endfor %}
-        </div>
-        {% endif %}
-    
-    </div>
-    {% endfor %}
 
-       </div>    
-        {% csrf_token %}
-        <button type="submit">Update</button>
-        or <a href="{% url 'index' %}">Cancel</a>
-    </form>
-</div>
+{% block content %}
+    <div class="main-container">
+        <form action="{% url 'profile update' pk=object.pk %}" method='post' enctype="multipart/form-data" class="form-container">
+            <div class="form-group">
+                    
+                {% if form.profile_image.value %}
+                    <img src="{{ form.profile_image.field.widget.attrs.current_image }}" alt="Current Profile Image"
+                         style="max-width: 200px;">
+                {% endif %}
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% if field.errors %}
+                            <div class="alert alert-danger">
+                                {% for error in field.errors %}
+                                    <strong>{{ error|escape }}</strong><br>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                    </div>
+                {% endfor %}
+
+            </div>
+
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Update</button>
+            <p>or <a href="{% url 'index' %}">Cancel</a></p>
+        </form>
+    </div>
+
+
+
 {% endblock %}

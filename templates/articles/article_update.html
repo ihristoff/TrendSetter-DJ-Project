@@ -8,6 +8,7 @@
         {% csrf_token %}
          {{ form.media }}
         <p>{{ form.title }}</p>
+        <p>{{ form.category }}</p>
         <p>{{ form.image }}</p>
         <p id="description">{{ form.description }}</p>
         <input type="submit" value="Update">

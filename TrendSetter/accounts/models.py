@@ -25,8 +25,6 @@ class TrendSetterUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin
         default=False,
     )
 
-
-
     USERNAME_FIELD = "email"
 
     objects= TrendSetterUserManager()
@@ -59,11 +57,13 @@ class Profile(models.Model):
     BEGINNER = 'beginner'
     INTERMEDIATE = 'intermediate'
     ADVANCED = 'advanced'
+    EXPERT = 'Expert'
 
     EXPERIENCE_CHOICES = [
         (BEGINNER, 'Beginner'),
         (INTERMEDIATE, 'Intermediate'),
         (ADVANCED, 'Advanced'),
+        (EXPERT, 'Expert'),
     ]
 
     user = models.OneToOneField(
@@ -72,23 +72,35 @@ class Profile(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
-    date_of_birth = models.DateField(null=True, blank=True)
-    # profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
     profile_image = models.ImageField(
         upload_to='profile_images/',
         validators=(image_size_validator,),
 
     )
+
+    username = models.CharField(max_length=25, unique=True, null=True, blank=True)
+
+    send_mail_for_new_article=models.BooleanField(default=False)
+    show_email = models.BooleanField(default=True)
+
+    bio = models.CharField(max_length=500, null=True, blank=True)
+
+    date_of_birth = models.DateField(null=True, blank=True)
+    # profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
+
     age = models.PositiveIntegerField(
         null=True,
         blank=True,
     )
     location = models.CharField(max_length=50, null=True, blank=True)
+
     trading_experience = models.CharField(
         max_length=12,
         choices=EXPERIENCE_CHOICES,
         default=BEGINNER,
     )
+
+    # followers = models.ManyToManyField(User, related_name='following', blank=True)
 
 
 

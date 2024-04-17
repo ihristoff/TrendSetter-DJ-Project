@@ -1,29 +1,24 @@
-body {
-
-    background-color: black;
-    background-image: none;
-}
-
 
 .register,
 .main-container {
 
-    background-color: #131722;
+    /*background-color: #131722;*/
     border-radius: 3px;
     box-shadow: 0 0 0 1px lightgreen;
-
+    margin-top: 10px;
+    margin-bottom: 10px;
     display: flex;
     font-size: 14px;
     flex-direction: column;
-    width: auto;
+    min-width: 400px;
 
-    overflow: hidden;
+    /*overflow: hidden;*/
     padding: 1rem;
     color: white;
-    position: absolute;
-    top:50%;
-    left:50%;
-     transform: translate(-50%, -50%);
+    /*position: absolute;*/
+    /*top:50%;*/
+    /*left:50%;*/
+    /*transform: translate(-50%, -50%);*/
 
 }
 
@@ -31,15 +26,18 @@ body {
     max-width: 600px;
     margin: auto;
     padding: 1rem;
+    color: white;
 
 }
 
 
-/*.form-group {*/
-/*    margin-bottom: 0.25rem;*/
-/*    align-items: center;*/
-/*    padding: 0.5rem;*/
-/*}*/
+.form-group {
+    color: white;
+    margin-bottom: 0.25rem;
+    align-items: center;
+    padding: 0.5rem;
+
+}
 
 /* Label styling */
 .form-group label {
@@ -61,6 +59,18 @@ body {
 
     align-content: center;
 }
+
+
+.form-control.error {
+    border-color: red; /* Set the border color for invalid fields */
+}
+
+.error-message, .errorlist, .alert, .alert-danger {
+    color: red; /* Set the color for error messages */
+    font-size: 14px; /* Optional: Set the font size for error messages */
+    font-weight: bold; /* Optional: Set the font weight for error messages */
+}
+
 
 /* Button styling */
 .btn-primary {
@@ -84,33 +94,34 @@ body {
 
 
 a {
-font-size: 1rem;
+    font-size: 1rem;
     color: green;
 }
 
 
+.profile-info {
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    gap: 3rem;
+}
 
+.profile-details{
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+    gap: 0.5rem;
+}
 
-   /*.main-container{*/
-   /*    display: flex;*/
-   /*    flex-direction: column;*/
-   /*    max-width: 800px;*/
+.profile-image {
+    width: 200px;
+    height: 100%;
 
-   /*}*/
-   .profile-info{
-       display: flex;
-       flex-direction: row;
-       padding: 1rem;
-       margin-bottom: 1rem;
-   }
-   .profile-image{
-       width: 200px;
-       height:100%;
-       border: 1px solid #bbbbbb;
-   }
+}
 
-   .profile_control{
-       margin-top:1rem;
-       padding: 0.5rem ;
-       display: block;
-   }
+.profile_control {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    display: block;
+}

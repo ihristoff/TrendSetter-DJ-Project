@@ -23,6 +23,9 @@ from django.urls import path, include
 
 handler404 = 'TrendSetter.main.views.custom_404'
 handler403 = 'TrendSetter.main.views.custom_403'
+handler500 = 'TrendSetter.main.views.custom_500'
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),

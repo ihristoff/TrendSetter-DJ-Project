@@ -1,4 +1,6 @@
 from django import forms
+from django.http import HttpResponseRedirect
+
 from .models import EducationalArticle, Comment, ArticleRating
 from django import forms
 from ckeditor.widgets import CKEditorWidget
@@ -7,9 +9,8 @@ class EducationalArticleForm(forms.ModelForm):
     description = forms.CharField(widget=CKEditorWidget())
     class Meta:
         model = EducationalArticle
-        fields = ['title', 'image','description']
+        fields = ['title', 'category', 'image','description']
 
-    # gallery = forms.ImageField()
 
     # labels={
     #     'title':'',
@@ -27,6 +28,9 @@ class EducationalArticleForm(forms.ModelForm):
     #     'description':'Des Long'
     # }
 
+
+class EducationalArticleUpdateForm(EducationalArticleForm):
+    pass
 
 class CommentForm(forms.ModelForm):
     content = forms.CharField(label ="", widget = forms.Textarea(
