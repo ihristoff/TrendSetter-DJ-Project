@@ -4,36 +4,37 @@
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/accounts.css' %}"/>    
-    
-<div class="register">
 
-    <h2>Sign in to your account</h2>
- {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-    <form action="{% url 'login' %}" method="post">
-        <div class="form-row">
-             <div class="form-group col-md-4 mb-0">
-                 {{ form.username|as_crispy_field}}
-            </div>
-             <div class="form-group col-md-4 mb-0">
-                  {{ form.password|as_crispy_field }}
-             </div>
-         </div>
-        <input type="hidden" value="{{next}}" name="next">
-        <button class="btn-primary" type="submit">Login</button>
-        
-        <p>Don't have an account? <a href="{% url 'register' %}">Join here </a></p>
-        
-        {% csrf_token %}
-    </form>
-       
-</div>
+    <div class="center-form">
+        <div class="register">
 
+            <h2>Sign in to your account</h2>
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <form action="{% url 'login' %}" method="post">
+                <div class="form-row">
+                    <div class="form-group col-md-4 mb-0">
+                        {{ form.username|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-4 mb-0">
+                        {{ form.password|as_crispy_field }}
+                    </div>
+                </div>
+                <input type="hidden" value="{{ next }}" name="next">
+                <button class="btn-primary" type="submit">Login</button>
+
+                <p>Don't have an account? <a href="{% url 'register' %}">Join here </a></p>
+
+                {% csrf_token %}
+            </form>
+
+        </div>
+
+    </div>
 {% endblock %}
 

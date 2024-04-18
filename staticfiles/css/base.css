@@ -5,9 +5,6 @@
 @import "rating.css";
 @import "dashboard-cards.css";
 @import 'article_details.css';
-/*@import "create.css";*/
-/*@import "catalog.css";*/
-/*@import "details.css";*/
 
 body {
 
@@ -15,9 +12,6 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /*align-content: space-around;*/
-    /* min-height: 100vh;*/
-    /* margin: 0;*/
     height: 100%;
     position: relative;
 
@@ -61,7 +55,6 @@ body {
     align-items: center;
 }
 
-
 .nav-link {
     padding: 0.25rem 1rem;
     color: white;
@@ -70,17 +63,23 @@ body {
 }
 
 .divider {
-    width: 1px; /* width of the divider */
-    height: 1.25rem; /* height of the divider */
-    background-color: grey; /* color of the divider */
+    width: 1px;
+    height: 1.25rem;
+    background-color: grey;
     flex-shrink: 0;
-    /*margin: 0 10px;  !* space around the divider *!*/
+  }
+
+.divider-vertical-page{
+    width: 1px;
+    background-color: grey;
+    flex-shrink: 0;
 }
 
+
 .nav-link:hover {
-    /*border-bottom:solid 2px green;*/
+
     background-color: black;
-    /*background-color: #0056b3; !* Darker background color on hover *!*/
+
     cursor: pointer;
     box-shadow: 0px 2px 0px green;
 }
@@ -135,7 +134,7 @@ body {
 }
 
 .button-link:hover {
-    background-color: green; /* Darker background color on hover */
+    background-color: green;
 }
 
 /*----------------------------------------*/
@@ -154,11 +153,19 @@ body {
 
 }
 
+.center-form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
 .create-article,
 .create-idea {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    min-width:400px;
 }
 
 
@@ -168,7 +175,8 @@ body {
     justify-content: space-between;
     /*justify-content: center;*/
     flex-grow: 1;
-    align-items: center;
+    /*align-items: center;*/
+    padding:0.5rem 4rem;
 }
 
 
@@ -208,13 +216,7 @@ footer {
     font-size: 0.5rem;
 }
 
-/*footer div > ul > li >a{*/
-/*    font-size: 0.75rem;*/
-/*    color: white;*/
-/*    line-height: 1;*/
-/*    padding: 6px;*/
-/*    text-decoration: none;*/
-/*}*/
+
 
 .footer-link {
     font-size: 0.75rem;

@@ -2,29 +2,30 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
+    <div class="center-form">
+        <div class="main-container">
+            <form action="{% url 'profile delete' pk=request.user.pk %}" method='post'>
 
-    <div class="main-container">
-        <form action="{% url 'profile delete' pk=request.user.pk %}" method='post'>
+                <div class="delete-profile">
+                    <p>{{ profile.user.username }}</p>
+                    <h1>
+                        Are you sure you want to delete your profile?
+                    </h1>
 
-            <div class="delete-profile">
-                <p>{{ profile.user.username }}</p>
-                <h1>
-                    Are you sure you want to delete your profile?
-                </h1>
-
-            </div>
+                </div>
 
 
-            {% csrf_token %}
-            <button type="submit">Delete</button>
-            or <a href="{% url 'index' %}">Cancel</a>
-        </form>
-        <script>
-            function confirmDelete() {
-                if (confirm('Are you sure you want to delete your profile?')) {
-                    // Handle profile deletion here
+                {% csrf_token %}
+                <button type="submit" class="alert-danger">Delete</button>
+                or <a href="{% url 'index' %}">Cancel</a>
+            </form>
+            <script>
+                function confirmDelete() {
+                    if (confirm('Are you sure you want to delete your profile?')) {
+                        // Handle profile deletion here
+                    }
                 }
-            }
-        </script>
+            </script>
+        </div>
     </div>
 {% endblock %}
