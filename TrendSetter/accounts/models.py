@@ -29,8 +29,8 @@ class TrendSetterUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin
 
     objects= TrendSetterUserManager()
 
-    # def __str__(self):
-    #     return self.email
+    def __str__(self):
+        return self.email
 
     class Meta:
         verbose_name = "User"
@@ -67,7 +67,7 @@ class Profile(models.Model):
     ]
 
     user = models.OneToOneField(
-        #no need to use UserModel here because both models are in one file
+
         TrendSetterUser,
         on_delete=models.CASCADE,
         primary_key=True,
@@ -75,7 +75,6 @@ class Profile(models.Model):
     profile_image = models.ImageField(
         upload_to='profile_images/',
         validators=(image_size_validator,),
-
     )
 
     username = models.CharField(max_length=25, unique=True, null=True, blank=True)
@@ -109,22 +108,7 @@ class Profile(models.Model):
  #        return self.user.email
 #
 
-# -------------------- HTML choices
-# {% if user.profile.display_preference == 'first_last' %}
-#     {% if user.profile.first_name and user.profile.last_name %}
-#         {{ user.profile.first_name }} {{ user.profile.last_name }}
-#     {% elif user.profile.username %}
-#         {{ user.profile.username }}
-#     {% else %}
-#         {{ user.email }}
-#     {% endif %}
-# {% elif user.profile.display_preference == 'username' %}
-#     {{ user.profile.username }}
-# {% else %}
-#     {{ user.email }}
-# {% endif %}
-#
-# ---------------------------
+
 
     # @property
     # def full_name(self):

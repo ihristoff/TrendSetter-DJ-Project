@@ -4,7 +4,7 @@
 
 
 {% block content %}
-
+<div class="center-form">
     <div class="main-container">
     <div class="profile-info">
         <h1>Profile Details</h1>
@@ -59,7 +59,7 @@
                 <a href="{% url 'profile change password' pk=request.user.pk %}" class="nav-link">Change Password</a>
             </div>
         {% endif %}
-
+</div>
 {% endblock %}
 
 

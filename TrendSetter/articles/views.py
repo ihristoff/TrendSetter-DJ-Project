@@ -161,7 +161,7 @@ class AllArticlesView(views.ListView):
     queryset = EducationalArticle.objects.all()
     template_name = 'articles/article_dashboard.html'
     context_object_name = 'articles'
-    ordering = ['-created_at']
+    # ordering = ['-created_at']
     paginate_by =6
 
     def get_queryset(self):
@@ -169,16 +169,16 @@ class AllArticlesView(views.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # all_articles = EducationalArticle.objects.all().order_by('-created_at')
-        # articles= context['articles']
-
         queryset = self.get_queryset().annotate(avg_rating=Avg('articlerating__rating'), num_comments=Count('comment'), )
+        category = self.request.GET.get('category')
         search_query = self.request.GET.get('q')
         filter_type = self.request.GET.get('filter')
-        # queryset = self.get_queryset()
+
         if search_query:
             queryset = queryset.filter(title__icontains=search_query)
             # Apply predefined filters
+        if category:
+            queryset = queryset.filter(category=category)
         if filter_type == 'most_viewed':
             queryset = self.get_most_viewed(queryset)
         elif filter_type == 'most_commented':
@@ -189,13 +189,12 @@ class AllArticlesView(views.ListView):
         paginator = Paginator(queryset, self.paginate_by)
         page = self.request.GET.get('page')
         context['articles'] = paginator.get_page(page)
+        context['category'] = category
+        context['categories'] = EducationalArticle.CATEGORY_CHOICES
 
         return context
 
     def get_most_viewed(self, queryset):
-        annotated_queryset = queryset.annotate(num_views=Count('views'))
-        ordered_queryset = annotated_queryset.order_by('-num_views')
-        print(ordered_queryset.query)
         return queryset.annotate(num_views=Count('views')).order_by('-num_views')
     def get_most_commented(self, queryset):
         return queryset.annotate(num_comments=Count('comment')).order_by('-num_comments')

@@ -89,6 +89,9 @@
                                     {% elif article.user %}
                                         <p class="card-item"><small class="card-item small">
                                             by {{ article.user }}</small></p>
+                                    {% elif article.author_name %}
+                                        <p class="card-item"><small class="card-item small">
+                                            by {{ article.author_name }}</small></p>
                                     {% else %}
                                         <p class="card-item"><small class="card-item small"> by Editor</small></p>
                                     {% endif %}
@@ -146,7 +149,7 @@
 
 
         </div>
-        <div class="divider"></div>
+        <div class="divider-vertical-page"></div>
         <div class="side-bar-left"></div>
 
     </div>

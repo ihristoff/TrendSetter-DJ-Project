@@ -72,12 +72,35 @@
                     <p class="card-description">{{ idea.description|safe |truncatechars:200|sanitize }}...</p>
 
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Category</li>
+                        <li class="list-group-item">Category {{ idea.category }}</li>
                         <li class="list-group-item">
                             <small class="text-muted">Published {{ idea.created_at|naturaltime }}</small>
                         </li>
-                        <li class="list-group-item">Vestibulum at eros</li>
+                     
                     </ul>
+                    
+                    <div class="info-2">
+                                <div class="card-info-left">
+                                    {% if article.user.profile.username %}
+                                        <p class="card-item"><small class="card-item small">
+                                            by {{ article.user.profile.username }}</small></p>
+                                    {% elif article.user %}
+                                        <p class="card-item"><small class="card-item small">
+                                            by {{ article.user }}</small></p>
+                                    {% elif article.author_name %}
+                                        <p class="card-item"><small class="card-item small">
+                                            by {{ article.author_name }}</small></p>
+                                    {% else %}
+                                        <p class="card-item"><small class="card-item small"> by Editor</small></p>
+                                    {% endif %}
+                                    <p class="card-item"><small
+                                            class="card-item small">Published {{ article.created_at }}</small></p>
+                                </div>
+                                <p class="card-item-icon"><i
+                                        class="fa-regular fa-comments"></i> {{ article.num_comments }}</p>
+                            </div>
+                    
+                    
                     <div class="card-body">
                         <a href="#" class="card-link">Read More</a>
 
@@ -126,8 +149,8 @@
         </div>
     </div>
 
-    <div class="divider"></div>
+    <div class="divider-vertical-page"></div>
     <div class="side-bar-left"></div>
-    
+
 </div>    
 {% endblock %}

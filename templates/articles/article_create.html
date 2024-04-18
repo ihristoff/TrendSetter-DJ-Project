@@ -2,21 +2,22 @@
 
 
 {% block content %}
-    
-    <div class="create-form">
-        <form class="create-article" method="post" enctype="multipart/form-data">
-            <h2>Create Educational Article</h2>
-            {{ form.media}}
-            <p>{{ form.title }}</p>
-            <p>Upload image: {{ form.image }}</p>
-            <p>Category:</p>
-            <p>{{ form.category }}</p>
-            
-            <p>Description:</p>
-            <p>{{ form.description }}</p>
-            
-        <button class="btn-primary" type="submit" value="Save">Save</button>
-        {% csrf_token %}
-    </form>
+    <div class="center-form">
+        <div class="create-form">
+            <form class="create-article" method="post" enctype="multipart/form-data">
+                <h2>Create Educational Article</h2>
+                {{ form.media }}
+                <p>{{ form.title }}</p>
+                <p>Upload image: {{ form.image }}</p>
+                <p>Category:</p>
+                <p>{{ form.category }}</p>
+
+                <p>Description:</p>
+                <p>{{ form.description }}</p>
+
+                <button class="btn-primary" type="submit" value="Save">Save</button>
+                {% csrf_token %}
+            </form>
+        </div>
     </div>
 {% endblock %}
