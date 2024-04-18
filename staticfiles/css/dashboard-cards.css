@@ -112,9 +112,9 @@
     flex-direction: row;
     align-items: center;
     gap: 2rem;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    min-width:70vw;
+    /*margin-bottom: 1rem;*/
+    /*padding: 1rem;*/
+    min-width:65vw;
 }
 
 .filter-form {

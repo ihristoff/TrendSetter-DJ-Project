@@ -3,21 +3,19 @@
 
 {% block content %}
 
-    <h2>Delete Article</h2>
-   
+    <div class="center-form">
+        <div class="main-container">
+            <div class="profile-details">
+                <p>Are you sure you want to delete this article?</p>
 
-{##}
-{#    #}
-{#     <p>Are you sure you want to delete "{{ object }}"?</p>#}
+                <form action="{% url 'delete article' article_slug=object.slug %}" method="post">
 
-    <form  action="{% url 'delete article' article_slug=object.slug %}"  method="post">
-{#            <p>Title{{ object.title }}</p>#}
-{#            <p>Object.slug {{ object.slug }}</p>#}
-{#  #}
-{#       <img src="{{ image.url }}" alt="{{ object }}" width="500">#}
-        {{ form.as_p }}
-        {% csrf_token %}
-        <button type="submit">Confirm</button>
-    </form>
+                    {{ form.as_p }}
+                    {% csrf_token %}
+                    <button class="alert-danger" type="submit">Confirm</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

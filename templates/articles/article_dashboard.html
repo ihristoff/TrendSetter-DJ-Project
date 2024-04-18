@@ -5,13 +5,22 @@
 {% load humanize %}
 {% load custom_filters %}
 {% block content %}
+    
+    
 
     <div class="idea-container">
         <div class="main">
+            <div class="page-info">
+                <p>Check out our best</p>
+                <h1>SETUPS!</h1>
+            </div>
 
             <div class="filter-buttons">
-                <a class="nav-link" href="?filter=most_viewed">Most Viewed</a>
-                <div class="divider"></div>
+{#            TODO: fix filtration#}
+{#                <a class="nav-link" href="?filter=most_viewed">Most Viewed</a>#}
+{#                <div class="divider"></div>#}
+            <a class="nav-link" href="?filter=highest_rated" >Highest rated</a>
+            <div class="divider"></div>
                 <a class="nav-link" href="?filter=most_commented">Most Commented</a>
                 <div class="divider"></div>
                 <a class="nav-link" href="?filter=most_recent">Most Recent</a>
@@ -150,7 +159,34 @@
 
         </div>
         <div class="divider-vertical-page"></div>
-        <div class="side-bar-left"></div>
+        <div class="side-bar-left">
+            <div class="side-bar-div">
+                <h2>Useful Links</h2>
+                <ul>
+                    <li><a href="https://www.tradingview.com/">Tradingview </a></li>
+                    <li><a href="https://x.woo.org/register?ref=RIOTRIOT">WOO</a></li>
+                    <li><a href="https://tradingriot.com/blog">Tradingriot Blog</a></li>
+                    <li><a href="https://www.youtube.com/channel/UCzNpiFiu-8b5mS3yOMhH5XA">Financial Markets
+                        Microstructure</a></li>
+                    {#        <li><a href="#">Tradingriot Blog</a></li>#}
+                    {#        <li><a href="#">Tradingriot Blog</a></li>#}
+                </ul>
+            </div>
+{#            <div class="side-bar-div">#}
+{#                <h2>Never miss new articles. Enter your email below!</h2>#}
+{#                <form action="#" method="post">#}
+{#                    <label for="email">Email:</label>#}
+{#                    <input type="email" id="email" name="email" required>#}
+{#                    <button class="btn-primary" type="submit" value="Save">Save</button>#}
+{#                </form>#}
+{#            </div>#}
+
+                        <div class="widget">
+                 
+                            {% include 'common/tv-widgets/tv-top-stories-widget.html' %}
+
+                        </div>
+        </div>
 
     </div>
 {% endblock %}

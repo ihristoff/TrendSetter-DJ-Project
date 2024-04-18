@@ -118,7 +118,6 @@ class ArticleRating(models.Model):
             else:
                 email_field_name = UserModel.get_email_field_name()
                 self.author_name = getattr(self.user, email_field_name)
-            super().save(*args, **kwargs)
 
         super().save(*args, **kwargs)
 

@@ -1,30 +1,35 @@
 {% extends "base.html" %}
+{% load custom_filters %}
 {% load humanize %}
 {% load static %}
 {% block content %}
 
-    <link rel="stylesheet" href="{% static 'css/article_details.css' %}"/>
 
-    {#       <div class="sort-navigation">#}
-    {#    <a href="{% url 'update idea' idea.pk %}">Update idea</a>#}
-    {#    <a href="{% url 'delete idea' idea.pk %}">Delete idea</a>#}
-    {#    <!-- Add more sorting options as needed -->#}
-    {#</div>#}
     <section class="idea-container">
 
         <div class="article-details">
-
+            <div class="sort-navigation">
+                {% if  user|is_content_creator or user.pk == article.user_id  or user.is_superuser %}
+{#                    <a class='nav-link' href="{% url 'update idea' idea.pk %}">Update idea</a>#}
+                    <a class='nav-link' href="{% url 'delete idea' idea.pk %}">Delete idea</a>
+                {% endif %}
+                <a class='nav-link' href="{{ request.META.HTTP_REFERER }}">Go Back</a>
+                <!-- Add more sorting options as needed -->
+            </div>
             <h1>{{ object.title }}</h1>
             <div class="tiny-info">
-                <p>Symbol: {{ object.symbol }}</p>
-                <p>Category: {{ object.category }}</p>
-                <p>Published: {{ object.created_at|naturaltime }}</p>
-                <p>Views: {{ idea.views }}</p>
+                <p class="card-item-icon">Symbol: {{ object.symbol }}</p>
+                <p class="card-item-icon">Category: {{ object.category }}</p>
+                <p class="card-item-icon">Published: {{ object.created_at|naturaltime }}</p>
+                <p class="card-item-icon">Views: {{ idea.views }}</p>
             </div>
-            <img id="myImg" class="article-img" src="{{ idea.idea_image.url }}" alt="{{ idea.title }}">
-            <p>Click to enlarge</p>
-            <div class="article-content">Description: {{ object.description|safe }}</div>
-            {#    <p >Click to enlarge</p> #}
+            <div class="article-container">
+                <div class="article-img">
+                    <img id="myImg" class="article-img" src="{{ idea.idea_image.url }}" alt="{{ idea.title }}">
+                    <p class="enlarge-text">Click to enlarge</p>
+                </div>
+                <div class="article-content">Description: {{ object.description|safe }}</div>
+            </div>
 
 
             <div class="add-comment">
@@ -71,26 +76,48 @@
         </div>
 
         <div class="side-bar-left">
-            <div class="symbol-info">             
+            <div class="symbol-info">
                 {% include 'common/tv-widgets/tv-chart.html' %}
-                
+
             </div>
-                <p>Heatmap: {{ heatmap }}</p>
-                <p>Category: {{ object.category }}</p>
+         
             <div class="heatmap">
-                {% if   object.category  == 'Indicies'  or  object.category == 'Stocks'   %}
-                 {% include 'common/tv-widgets/tv-heatmap.html' %}
+                {% if   object.category  == 'Indicies'  or  object.category == 'Stocks' %}
+                    {% include 'common/tv-widgets/tv-heatmap.html' %}
                 {% elif  object.category   == 'Forex' %}
-                 {% include 'common/tv-widgets/tv-forex-heatmap.html' %}
+                    {% include 'common/tv-widgets/tv-forex-heatmap.html' %}
                 {% elif  object.category  == 'Crypto' %}
-                 {% include 'common/tv-widgets/tv-crypto-heatmap.html' %}    
-                
-                
+                    {% include 'common/tv-widgets/tv-crypto-heatmap.html' %}
+
+
                 {% endif %}
-       
+
             </div>
         </div>
+   <script>
+            // Get the modal
+            var modal = document.getElementById("myModal");
 
+            // Get the image and insert it inside the modal - use its "alt" text as a caption
+            var img = document.getElementById("myImg");
+            var modalImg = document.getElementById("img01");
+            var captionText = document.getElementById("caption");
+            img.onclick = function () {
+                modal.style.display = "block";
+                modalImg.src = this.src;
+                captionText.innerHTML = this.alt;
+            }
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+        </script>
+
+      
 
     </section>
 

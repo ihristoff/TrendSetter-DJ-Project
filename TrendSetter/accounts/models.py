@@ -35,12 +35,8 @@ class TrendSetterUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin
     class Meta:
         verbose_name = "User"
 
-#if UserModel is called before custom User creation in code i am getting errors
-# django.core.exceptions.ImproperlyConfigured: AUTH_USER_MODEL refers to model 'accounts.TrendSetterUser' that has not been installed
 
-#User Data
 
-#TODO: Profile fields
 class Profile(models.Model):
     # DISPLAY_CHOICES = [
     #     ('first_last', 'First Name Last Name'),
@@ -75,6 +71,8 @@ class Profile(models.Model):
     profile_image = models.ImageField(
         upload_to='profile_images/',
         validators=(image_size_validator,),
+        null=True,
+        blank=True,
     )
 
     username = models.CharField(max_length=25, unique=True, null=True, blank=True)
@@ -102,17 +100,9 @@ class Profile(models.Model):
     # followers = models.ManyToManyField(User, related_name='following', blank=True)
 
 
-
- # # Add any additional fields related to the user profile
- #    def __str__(self):
- #        return self.user.email
-#
+ # Add any additional fields related to the user profile
+    def __str__(self):
+        return self.user.email
 
 
 
-    # @property
-    # def full_name(self):
-    #     if self.first_name and self.last_name:
-    #         return f'{self.first_name} {self.last_name}'
-    #
-    #     return self.first_name or self.last_name

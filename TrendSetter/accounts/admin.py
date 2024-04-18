@@ -8,19 +8,19 @@ from TrendSetter.accounts.views import AccountUserCreationForm
 
 UserModel = get_user_model()
 
-@admin.register(UserModel)
-#using auth_admin.UserAdmin requires  'form' 'add_form' 'fieldsets' 'add_fieldsets'
-class TrendSetterUserAdmin(auth_admin.UserAdmin):
 
-    list_display = ('email','is_superuser','is_staff','last_login')
-    list_filter = ('is_staff','last_login')
-    ordering = ('email','is_staff')
+@admin.register(UserModel)
+# using auth_admin.UserAdmin requires  'form' 'add_form' 'fieldsets' 'add_fieldsets'
+class TrendSetterUserAdmin(auth_admin.UserAdmin):
+    list_display = ('email', 'is_superuser', 'is_staff', 'last_login', 'date_joined')
+    list_filter = ('is_staff', 'last_login', 'date_joined')
+    ordering = ('email', 'is_staff')
     search_fields = ('email',)
 
     form = AccountUserChangeForm
     fieldsets = (
-        (None, {'fields': ('email','password')}),
-        ('Permissions', {'fields': ('is_superuser','is_staff', 'groups', 'user_permissions')}),
+        (None, {'fields': ('email', 'password')}),
+        ('Permissions', {'fields': ('is_superuser', 'is_staff', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login',)}),
     )
 
@@ -29,35 +29,14 @@ class TrendSetterUserAdmin(auth_admin.UserAdmin):
         (None,
          {
              'classes': ('wide',),
-             'fields': ('email', 'password1','password2'),
-          },
+             'fields': ('email', 'password1', 'password2'),
+         },
          ),
     )
 
 
 @admin.register(Profile)
-#using auth_admin.UserAdmin requires  'form' 'add_form' 'fieldsets' 'add_fieldsets'
 class ProfileAdmin(admin.ModelAdmin):
-    pass
-
-    # list_display = ('email','is_superuser','is_staff','last_login')
-    # list_filter = ('is_staff','last_login')
-    # ordering = ('email','is_staff')
-    # search_fields = ('email',)
-    #
-    # form = AccountUserChangeForm
-    # fieldsets = (
-    #     (None, {'fields': ('email','password')}),
-    #     ('Permissions', {'fields': ('is_superuser','is_staff', 'groups', 'user_permissions')}),
-    #     ('Important dates', {'fields': ('last_login',)}),
-    # )
-    #
-    # add_form = AccountUserCreationForm
-    # add_fieldsets = (
-    #     (None,
-    #      {
-    #          'classes': ('wide',),
-    #          'fields': ('email', 'password1','password2'),
-    #       },
-    #      ),
-    # )
+    list_display = ('user', 'username', 'trading_experience', 'send_mail_for_new_article', 'show_email')
+    list_filter = ('trading_experience', 'send_mail_for_new_article', 'show_email')
+    search_fields = ('user__email', 'username')
