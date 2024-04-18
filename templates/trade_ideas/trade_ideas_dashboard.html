@@ -14,8 +14,10 @@
         </div>
 
         <div class="filter-container">
-            <a href="?filter=most_viewed" class="nav-link">Most Viewed</a>
-            <div class="divider"></div>
+{#        TODO: Debug why not working right#}
+{#            <a href="?filter=most_viewed" class="nav-link">Most Viewed</a>#}
+{#            <div class="divider"></div>#}
+            
             <a href="?filter=most_commented" class="nav-link">Most Commented</a>
             <div class="divider"></div>
             <a href="?filter=most_recent" class="nav-link">Most Recent</a>
@@ -30,9 +32,7 @@
                                     {% if category == value %}selected{% endif %}>{{ label }}</option>
                         {% endfor %}
                     </select>
-                    {#                 <button type="submit" class="filter-button">#}
-                    {#                    <i class="fa fa-search"></i> <!-- Magnifying glass icon -->#}
-                    {#                </button>#}
+           
                     <div class="divider"></div>
 
                     <select name="symbol" class="filter-select">
@@ -41,9 +41,7 @@
                             <option value="{{ value }}" {% if symbol == value %}selected{% endif %}>{{ label }}</option>
                         {% endfor %}
                     </select>
-                    {#                 <button type="submit" class="filter-button">#}
-                    {#                    <i class="fa fa-search"></i> <!-- Magnifying glass icon -->#}
-                    {#                </button>#}
+            
                     <div class="divider"></div>
 
 
@@ -71,40 +69,40 @@
 
                     <p class="card-description">{{ idea.description|safe |truncatechars:200|sanitize }}...</p>
 
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Category {{ idea.category }}</li>
-                        <li class="list-group-item">
-                            <small class="text-muted">Published {{ idea.created_at|naturaltime }}</small>
-                        </li>
-                     
-                    </ul>
+                    <div class="info-1">
+                        <p class="card-item-icon">Category {{ idea.category }}</p>
+                <p class="card-item-icon"><i class="fa-regular fa-eye"></i> {{ idea.views }}</p>
+                    </div>                    
+                 
                     
                     <div class="info-2">
                                 <div class="card-info-left">
-                                    {% if article.user.profile.username %}
+                                    {% if idea.user.profile.username %}
                                         <p class="card-item"><small class="card-item small">
-                                            by {{ article.user.profile.username }}</small></p>
-                                    {% elif article.user %}
+                                            by {{ idea.user.profile.username }}</small></p>
+                                    {% elif idea.user %}
                                         <p class="card-item"><small class="card-item small">
-                                            by {{ article.user }}</small></p>
-                                    {% elif article.author_name %}
+                                            by {{ idea.user }}</small></p>
+                                    {% elif idea.author_name %}
                                         <p class="card-item"><small class="card-item small">
-                                            by {{ article.author_name }}</small></p>
+                                            by {{ idea.author_name }}</small></p>
                                     {% else %}
                                         <p class="card-item"><small class="card-item small"> by Editor</small></p>
                                     {% endif %}
                                     <p class="card-item"><small
-                                            class="card-item small">Published {{ article.created_at }}</small></p>
+                                            class="card-item small">Published {{ idea.created_at |naturaltime}}</small></p>
                                 </div>
+                    
+{#                    TODO: Numbers not showing#}
                                 <p class="card-item-icon"><i
-                                        class="fa-regular fa-comments"></i> {{ article.num_comments }}</p>
+                                        class="fa-regular fa-comments"></i> {{ idea.num_comments }}</p>
                             </div>
                     
                     
-                    <div class="card-body">
-                        <a href="#" class="card-link">Read More</a>
-
-                    </div>
+{#                    <div class="card-body">#}
+{#                        <a href="#" class="card-link">Read More</a>#}
+{##}
+{#                    </div>#}
                 </div>
             {% endfor %}
         </div>
@@ -150,7 +148,37 @@
     </div>
 
     <div class="divider-vertical-page"></div>
-    <div class="side-bar-left"></div>
+    <div class="side-bar-left">
+    
+            <div class="side-bar-div">
+                <h2>Useful Links</h2>
+                <ul>
+                    <li><a href="https://www.tradingview.com/">Tradingview </a></li>
+                    <li><a href="https://x.woo.org/register?ref=RIOTRIOT">WOO</a></li>
+                    <li><a href="https://tradingriot.com/blog">Tradingriot Blog</a></li>
+                    <li><a href="https://www.youtube.com/channel/UCzNpiFiu-8b5mS3yOMhH5XA">Financial Markets
+                        Microstructure</a></li>
+                    {#        <li><a href="#">Tradingriot Blog</a></li>#}
+                    {#        <li><a href="#">Tradingriot Blog</a></li>#}
+                </ul>
+            </div>
+{#            <div class="side-bar-div">#}
+{#                <h2>Never miss new articles. Enter your email below!</h2>#}
+{#                <form action="#" method="post">#}
+{#                    <label for="email">Email:</label>#}
+{#                    <input type="email" id="email" name="email" required>#}
+{#                    <button class="btn-primary" type="submit" value="Save">Save</button>#}
+{#                </form>#}
+{#            </div>#}
+
+                        <div class="widget">
+                 
+                            {% include 'common/tv-widgets/tv-top-stories-widget.html' %}
+
+                        </div>
+        
+    
+    </div>
 
 </div>    
 {% endblock %}

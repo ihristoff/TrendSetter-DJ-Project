@@ -2,18 +2,20 @@
 {% load static %}
 
 {% block content %}
+    <div class="center-form">
+        <div class="main-container">
+            <h2>Edit Education Article</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.media }}
+                <p>{{ form.title }}</p>
+                <p>{{ form.category }}</p>
+                <p>{{ form.image }}</p>
+                <p id="description">{{ form.description }}</p>
+                <input type="submit" value="Update">
+            </form>
+        </div>
+    </div>
 
-    <h2>Edit Education Article</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-         {{ form.media }}
-        <p>{{ form.title }}</p>
-        <p>{{ form.category }}</p>
-        <p>{{ form.image }}</p>
-        <p id="description">{{ form.description }}</p>
-        <input type="submit" value="Update">
-    </form>
-    
-    
 
 {% endblock %}

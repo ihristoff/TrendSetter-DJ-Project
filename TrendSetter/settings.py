@@ -164,5 +164,8 @@ LOGIN_REDIRECT_URL = reverse_lazy('index')
 LOGIN_URL = reverse_lazy('login')
 LOGOUT_REDIRECT_URL = reverse_lazy('index')
 
+MAILJET_API_KEY = 'a34ba67ac2b2f458080f021f37e8e0df'
+MAILJET_SECRET_KEY = '7d795b04c76ce5bb6e325cfe7da088b1'
 
+DEFAULT_FROM_EMAIL = 'ivo.hristoff@students.softuni.bg'
 

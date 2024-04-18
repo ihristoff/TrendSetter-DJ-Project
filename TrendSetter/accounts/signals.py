@@ -4,30 +4,20 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from TrendSetter.accounts.models import Profile
+from TrendSetter.accounts.utils import send_welcome_email
 
 UserModel = get_user_model()
 
 @receiver(post_save, sender=UserModel)
 def user_created(sender, instance, created, *args, **kwargs):
-    #created=False when update, and True on creation
+
     if not created:
         return
 
-    #maybe not needed
     if Profile.objects.filter(pk=instance.pk).first():
        return
 
     Profile.objects.create(user=instance)
 
-    # #same as:
-    # profile = Profile(user=instance)
-    # profile.save()
+    send_welcome_email(instance.email)
 
-    # ---- add user to a Group 'Regular User' after creation
-    # if created:
-    #     group = Group.objects.get_or_create(name='Regular User')
-    #     instance.groups.add(group)
-    #     instance.save()
-
-
-#TODO send mail

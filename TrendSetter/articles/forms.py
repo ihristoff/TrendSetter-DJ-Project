@@ -54,7 +54,7 @@ class EducationalArticleFormDelete(forms.ModelForm):
 
     class Meta:
         model = EducationalArticle
-        fields = ['title', 'image']
+        fields = ['title',]
 
     def save(self, commit=True):
         if commit:
@@ -66,3 +66,9 @@ class EducationalArticleFormDelete(forms.ModelForm):
         obj = self.get_object()
         obj.delete()
         return HttpResponseRedirect(self.get_success_url())
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for (_, field) in self.fields.items():
+
+            field.widget.attrs['readonly'] = 'readonly'

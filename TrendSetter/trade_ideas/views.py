@@ -74,10 +74,11 @@ class TradeIdeasDashboardView(views.ListView):
     paginate_by =6
 
     def get_queryset(self):
-        return TradeIdea.objects.all().order_by('-created_at')
+        return TradeIdea.objects.all().order_by('-created_at').annotate(num_comments=Count('comment'), )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # queryset = self.get_queryset().annotate(num_comments=Count('comment'), )
 
         search_query = self.request.GET.get('q')
         filter_type = self.request.GET.get('filter')
@@ -156,7 +157,8 @@ class TradeIdeaDetailView(auth_mixin.LoginRequiredMixin, views.DetailView):
             heatmap = 'Crypto'
 
         context['heatmap'] = heatmap
-        print(f"Heatmap value: {heatmap}")
+
+
 
         return context
 

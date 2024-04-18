@@ -65,13 +65,14 @@
 
 .home-card-counters{
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row;
+    /*justify-content: space-between;*/
     /*border: 1px solid dimgrey;*/
+    gap:2rem;
     border-radius: 5px;
-    border: 1px solid green;
+    /*border: 1px solid green;*/
     background-color: black;
-    vertical-align: center;
+    /*vertical-align: center;*/
     /*flex-basis: 20%;*/
     /*width: 20rem;*/
     /*height: 20rem;*/
@@ -80,7 +81,7 @@
     align-self: flex-end;
     padding:3rem;
     margin-right:3rem;
-    margin-top:3rem;
+    margin-top:7rem;
 
 }
 
@@ -98,6 +99,8 @@
     font-size: 1.5rem;
     gap:0.8rem;
     color:limegreen;
+    border: 1px solid green;
+    padding:0.3rem;
 }
 
 .number {
@@ -109,7 +112,7 @@
 
 
 .home-icon {
-    width:30px;
+    width:40px;
     height: 100%;
     background-color: limegreen;
 }

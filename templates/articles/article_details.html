@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load custom_filters %}
 {% load static %}
 {% block content %}
 
@@ -6,16 +7,21 @@
     <section class="idea-container">
 
         <div class="article-details ">
+
             <div class="sort-navigation">
-                <a href="{% url 'update article' article.slug %}">Update article</a>
-                <a href="{% url 'delete article' article.slug %}">Delete article</a>
+                {% if  user|is_content_creator or user.pk == article.user_id %}
+                    <a class='nav-link' href="{% url 'update article' article.slug %}">Update article</a>
+                    <a class='nav-link' href="{% url 'delete article' article.slug %}">Delete article</a>
+                {% endif %}
+                <a class='nav-link' href="{{ request.META.HTTP_REFERER }}">Go Back</a>
                 <!-- Add more sorting options as needed -->
             </div>
+
 
             <h1>{{ object.title }}</h1>
             <div class="article-container">
                 <div class="article-img">
-                    <img id="myImg" class="article-img" src="{{ article.image.url }}" alt="{{ article.title }}">
+                    <img id="myImg" class="article-img" src="{{ article.image.url }}" alt="{{ article.title|upper }}">
                     <p class="enlarge-text">Click to enlarge</p>
                 </div>
                 <div class="article-text">
@@ -23,30 +29,56 @@
                 </div>
             </div>
 
-            {#    <p >Click to enlarge</p> #}
+
             <p>Views: {{ article.views }}</p>
             <p>Author: {{ article.user }}</p>
 
+            <div class="info-1">
+                <div class="rating">
 
-            <div class="rating-container">
-{#                
-                <p>Rate this article:</p>
-                <form method="post" id="ratingForm" action="{% url 'details article' article_slug=object.slug %}">
-                    {% csrf_token %}
+                    <p>Rate this article:</p>
+                    <form method="post" id="ratingForm" action="{% url 'details article' article_slug=object.slug %}">
+                        {% csrf_token %}
 
-                    <input type="hidden" id="ratingInput" name="rating">
-                    <input type="hidden" id="formTypeInput" name="form_type">
+                        <input type="hidden" id="ratingInput" name="rating">
+                        <input type="hidden" id="formTypeInput" name="form_type">
 
-                    <button class="rate-button" data-rate="5" type="button">&#9733;</button>
-                    <button class="rate-button" data-rate="4" type="button">&#9733;</button>
-                    <button class="rate-button" data-rate="3" type="button">&#9733;</button>
-                    <button class="rate-button" data-rate="2" type="button">&#9733;</button>
-                    <button class="rate-button" data-rate="1" type="button">&#9733;</button>
-                </form>
+                        <button class="rate-button" data-rate="5" type="button">&#9733;</button>
+                        <button class="rate-button" data-rate="4" type="button">&#9733;</button>
+                        <button class="rate-button" data-rate="3" type="button">&#9733;</button>
+                        <button class="rate-button" data-rate="2" type="button">&#9733;</button>
+                        <button class="rate-button" data-rate="1" type="button">&#9733;</button>
+                    </form>
+{#                                <p class="card-item-icon"><i#}
+{#                            class="fa-regular fa-comments"></i> {{ article.num_comments }}</p>#}
+                </div>
             </div>
 
-             {% if not comments %}
-                <h5><p>No comments yet.</p> </h5>
+            <div class="info-2">
+                <div class="card-info-left">
+                    {% if article.user.profile.username %}
+                        <p class="card-item"><small class="card-item small">
+                            by {{ article.user.profile.username }}</small></p>
+                    {% elif article.user %}
+                        <p class="card-item"><small class="card-item small">
+                            by {{ article.user }}</small></p>
+                    {% elif article.author_name %}
+                        <p class="card-item"><small class="card-item small">
+                            by {{ article.author_name }}</small></p>
+                    {% else %}
+                        <p class="card-item"><small class="card-item small"> by Editor</small></p>
+                    {% endif %}
+                    <p class="card-item"><small
+                            class="card-item small">Published {{ article.created_at }}</small></p>
+        
+                </div>
+            </div>
+            
+
+
+
+            {% if not comments %}
+                <h5><p>No comments yet.</p></h5>
             {% endif %}
             <div class="add-comment">
                 <h4>Add a comment:</h4>
@@ -83,7 +115,7 @@
                     </div>
                     <p class="comment">{{ comment.content }}</p>
                 </div>
-         
+
             {% endfor %}
 
             <div id="myModal" class="modal">

@@ -16,9 +16,9 @@ from .forms import EducationalArticleForm, CommentForm, EducationalArticleFormDe
     EducationalArticleUpdateForm
 from .models import EducationalArticle, Comment, ArticleRating
 
-import logging
 
-logger = logging.getLogger(__name__)
+from .signals import *
+
 
 
 UserModel = get_user_model()
@@ -80,18 +80,21 @@ class EducationalArticleDetailView(auth_mixin.LoginRequiredMixin, views.DetailVi
     template_name = 'articles/article_details.html'
     context_object_name = 'article'
 
+
     def get_context_data(self, **kwargs):
+
         context = super().get_context_data(**kwargs)
         context['comment_form'] = CommentForm()
         context['comments'] = Comment.objects.filter(article=self.object)
         context['rating_form'] = ArticleRatingForm()
+
 
         return context
 
     def post(self, request, *args, **kwargs):
 
         form_type = request.POST.get('form_type')
-        # rating= request.POST.get('rating')
+
 
         if form_type == 'comment':
             form = CommentForm(request.POST)
@@ -103,21 +106,15 @@ class EducationalArticleDetailView(auth_mixin.LoginRequiredMixin, views.DetailVi
                 return redirect('details article', article_slug=self.get_object().slug)
             else:
                 messages.error(request, 'Comment could not be added.')
-                return self.get(request, *args, **kwargs)  # Render the page again with validation errors
+                return self.get(request, *args, **kwargs)
 
         elif form_type == 'rating':
             rating_form = ArticleRatingForm(request.POST)
             if rating_form.is_valid():
-                # rating = rating_form.save(commit=False)
-                # rating.user = request.user
-                # rating.article = self.get_object()
-                # rating.save()
-                # return redirect('details article', article_slug=self.get_object().slug)
 
-                rating_value = rating_form.cleaned_data['rating']  # Assuming your form has a 'rating' field
+                rating_value = rating_form.cleaned_data['rating']
                 article = self.get_object()
 
-                # Try to get an existing rating for the user and article
                 try:
                     rating = ArticleRating.objects.get(user=request.user, article=article)
 
@@ -140,7 +137,10 @@ class EducationalArticleDetailView(auth_mixin.LoginRequiredMixin, views.DetailVi
         # return EducationalArticle.objects.get(slug=slug)
 
         try:
-            return EducationalArticle.objects.get(slug=slug)
+            queryset = EducationalArticle.objects.annotate(num_comments=Count('comment'))
+            return queryset.get(slug=slug)
+            # return EducationalArticle.objects.get(slug=slug)
+
         except EducationalArticle.DoesNotExist:
             raise Http404("Article does not exist")
         except EducationalArticle.user.RelatedObjectDoesNotExist:
@@ -169,7 +169,7 @@ class AllArticlesView(views.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        queryset = self.get_queryset().annotate(avg_rating=Avg('articlerating__rating'), num_comments=Count('comment'), )
+        queryset = self.get_queryset().annotate(avg_rating=Avg('articlerating__rating'), num_comments=Count('comment'),  )
         category = self.request.GET.get('category')
         search_query = self.request.GET.get('q')
         filter_type = self.request.GET.get('filter')
@@ -179,8 +179,11 @@ class AllArticlesView(views.ListView):
             # Apply predefined filters
         if category:
             queryset = queryset.filter(category=category)
+
         if filter_type == 'most_viewed':
             queryset = self.get_most_viewed(queryset)
+        elif filter_type == 'highest_rated':
+            queryset = queryset.annotate(avg_rating=Avg('articlerating__rating')).order_by('-avg_rating')
         elif filter_type == 'most_commented':
             queryset = self.get_most_commented(queryset)
         elif filter_type == 'most_recent':
@@ -197,19 +200,17 @@ class AllArticlesView(views.ListView):
     def get_most_viewed(self, queryset):
         return queryset.annotate(num_views=Count('views')).order_by('-num_views')
     def get_most_commented(self, queryset):
-        return queryset.annotate(num_comments=Count('comment')).order_by('-num_comments')
+        return queryset.annotate(num_comments=Count('article_comments')).order_by('-num_comments')
 
 
-class EducationalArticleDeleteView( auth_mixin.LoginRequiredMixin, views.DeleteView):
+class EducationalArticleDeleteView( auth_mixin.LoginRequiredMixin, auth_mixin.UserPassesTestMixin, views.DeleteView):
     model = EducationalArticle
     form_class = EducationalArticleFormDelete
     template_name = 'articles/article_delete.html'
     slug_url_kwarg = "article_slug"
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['image'] = self.get_object().image  # Pass the image field to the context
-    #     return context
+    def test_func(self):
+        return self.request.user.groups.filter(name='Content Creator').exists() or self.request.user.is_staff
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -218,13 +219,11 @@ class EducationalArticleDeleteView( auth_mixin.LoginRequiredMixin, views.DeleteV
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
-        # Here we are using Django's atomic transaction to ensure integrity
+
         with transaction.atomic():
-            # Delete the article
+
             self.object.delete()
-            # You can also handle related objects here if needed
-            # For example, if you want to keep the comments, do nothing here
-            # If you want to delete the comments, do something here
+
 
         return HttpResponseRedirect(self.get_success_url())
 

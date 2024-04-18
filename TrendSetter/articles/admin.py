@@ -5,22 +5,21 @@ from TrendSetter.articles.models import EducationalArticle, Comment, ArticleRati
 
 # Register your models here.
 @admin.register(EducationalArticle)
-class EducationArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug')
+class EducationalArticleAdmin(admin.ModelAdmin):
+    list_display = ('title', 'user', 'category', 'created_at', 'updated_at', 'views')
+    list_filter = ('category', 'created_at', 'updated_at')
+    search_fields = ('title', 'description')
+
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('author_name', 'article', 'created_at', 'updated_at')
+    list_filter = ('created_at', 'updated_at')
+    search_fields = ('content',)
 
 
 @admin.register(ArticleRating)
-class RatingArticleAdmin(admin.ModelAdmin):
-    pass
-
-#
-#
-# @admin.register(Comment)
-# class CommentAdmin(admin.ModelAdmin):
-#     list_display = ['name', 'email', 'article', 'created', 'active']
-#     list_filter = ['active', 'created', 'updated']
-#     search_fields = ['name', 'email', 'body']
+class ArticleRatingAdmin(admin.ModelAdmin):
+    list_display = ('user', 'article', 'rating', 'created_at')
+    list_filter = ('created_at',)
+    search_fields = ('author_name',)
