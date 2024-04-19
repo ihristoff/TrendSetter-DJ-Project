@@ -24,24 +24,24 @@ window.onclick = function (event) {
 //--------- animation counter ----------
 
 
-document.addEventListener('DOMContentLoaded', function () {
-    const counter = document.querySelector('.counter');
-    const number = counter.querySelector('.number');
-    const targetCount = parseInt(number.getAttribute('data-count'));
-    let currentCount = 0;
+// document.addEventListener('DOMContentLoaded', function () {
+//     const counter = document.querySelector('.counter');
+//     const number = counter.querySelector('.number');
+//     const targetCount = parseInt(number.getAttribute('data-count'));
+//     let currentCount = 0;
+//
+//     const updateCount = () => {
+//         if (currentCount < targetCount) {
+//             currentCount++;
+//             number.textContent = currentCount;
+//             setTimeout(updateCount, 20); // Adjust the timeout for faster or slower animation
+//         } else {
+//             number.textContent = targetCount;
+//         }
+//     };
 
-    const updateCount = () => {
-        if (currentCount < targetCount) {
-            currentCount++;
-            number.textContent = currentCount;
-            setTimeout(updateCount, 20); // Adjust the timeout for faster or slower animation
-        } else {
-            number.textContent = targetCount;
-        }
-    };
-
-    updateCount();
-});
+//     updateCount();
+// });
 
 
 //

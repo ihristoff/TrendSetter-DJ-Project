@@ -12,21 +12,21 @@ class EducationalArticleForm(forms.ModelForm):
         fields = ['title', 'category', 'image','description']
 
 
-    # labels={
-    #     'title':'',
-    #     'image':'',
-    #     'description':'',
-    # }
-    #
-    # help_texts = {
-    #     'image': 'Upload image',
-    # }
+    labels={
+        'title':'Title',
+        'category':'Category',
+        'description':'Description',
+    }
 
-    # help_text = {
-    #     'title':'Title',
-    #     'image':'Image',
-    #     'description':'Des Long'
-    # }
+    help_texts = {
+        'image': 'Upload image',
+    }
+
+    help_text = {
+        'title':'Title',
+        'image':'Image',
+        'description':'Description'
+    }
 
 
 class EducationalArticleUpdateForm(EducationalArticleForm):

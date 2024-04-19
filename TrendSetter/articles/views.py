@@ -200,7 +200,7 @@ class AllArticlesView(views.ListView):
     def get_most_viewed(self, queryset):
         return queryset.annotate(num_views=Count('views')).order_by('-num_views')
     def get_most_commented(self, queryset):
-        return queryset.annotate(num_comments=Count('article_comments')).order_by('-num_comments')
+        return queryset.annotate(num_comments=Count('comment')).order_by('-num_comments')
 
 
 class EducationalArticleDeleteView( auth_mixin.LoginRequiredMixin, auth_mixin.UserPassesTestMixin, views.DeleteView):
@@ -221,10 +221,7 @@ class EducationalArticleDeleteView( auth_mixin.LoginRequiredMixin, auth_mixin.Us
         self.object = self.get_object()
 
         with transaction.atomic():
-
             self.object.delete()
-
-
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):

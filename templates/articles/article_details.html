@@ -13,15 +13,15 @@
                     <a class='nav-link' href="{% url 'update article' article.slug %}">Update article</a>
                     <a class='nav-link' href="{% url 'delete article' article.slug %}">Delete article</a>
                 {% endif %}
-                <a class='nav-link' href="{{ request.META.HTTP_REFERER }}">Go Back</a>
+                <a class='nav-link' href="{% url 'education articles' %}">Go Back</a>
                 <!-- Add more sorting options as needed -->
             </div>
 
 
-            <h1>{{ object.title }}</h1>
+            <h1>{{ object.title|upper  }}</h1>
             <div class="article-container">
                 <div class="article-img">
-                    <img id="myImg" class="article-img" src="{{ article.image.url }}" alt="{{ article.title|upper }}">
+                    <img id="myImg" class="article-img" src="{{ article.image.url }}" alt="{{ article.title}}">
                     <p class="enlarge-text">Click to enlarge</p>
                 </div>
                 <div class="article-text">

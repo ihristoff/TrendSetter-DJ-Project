@@ -5,14 +5,36 @@
     <div class="center-form">
         <div class="main-container">
             <h2>Edit Education Article</h2>
-            <form method="post" enctype="multipart/form-data">
+            <form class='form-group' method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.media }}
-                <p>{{ form.title }}</p>
-                <p>{{ form.category }}</p>
-                <p>{{ form.image }}</p>
-                <p id="description">{{ form.description }}</p>
-                <input type="submit" value="Update">
+                {% for field in form %}
+                    <div>
+                        {{ field.label_tag }}
+                        {% if field.help_text %}
+                            <div class="helptext">
+                                {{ field.help_text }}
+                            </div>
+                        {% endif %}
+                        {% if field.errors %}
+                            <div class="error-message">
+                                {% for error in field.errors %}
+                                    <p class="error-text">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                
+                
+{#                <p>{{ form.title }}</p>#}
+{#                <p>{{ form.category }}</p>#}
+{#                <p>{{ form.image }}</p>#}
+{#                {{ form.as_p }} #}
+{#                <p id="description">{{ form.description }}</p>#}
+                <input class="btn-primary" type="submit" value="Update">
             </form>
         </div>
     </div>

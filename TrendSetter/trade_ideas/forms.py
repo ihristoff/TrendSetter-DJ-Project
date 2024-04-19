@@ -38,7 +38,7 @@ class CreateTradeIdeaForm(forms.ModelForm):
 class  DeleteTradeIdeaForm(forms.ModelForm):
     class Meta:
         model = TradeIdea
-        fields = ("title", 'symbol', 'timeframe', "idea_image")
+        fields = ("title",)
 
 
 #

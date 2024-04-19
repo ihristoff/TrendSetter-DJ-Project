@@ -2,14 +2,16 @@
 {% load static %}
 
 {% block content %}
+    <div class="center-form">
+        <div class="main-container">
+            <form class='form-group' action="{% url 'delete idea' pk=object.pk %}" method="post">
+                {{ form.title}}
 
-    <form action="{% url 'delete idea' pk=object.pk %}" method="post">
-    {{ form }}
-    
-        <button type="submit">Delete</button>
-        <a href="{% url 'index' %}">Cancel</a>
-    {% csrf_token %}
-    </form>
-
+                <button class="btn-delete" type="submit">Delete</button>
+                <p>or   <a  href="{% url 'trade ideas dashboard' %}">Cancel</a></p>
+                {% csrf_token %}
+            </form>
+        </div>
+    </div>
 
 {% endblock %}

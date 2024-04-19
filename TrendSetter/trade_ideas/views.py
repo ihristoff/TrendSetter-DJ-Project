@@ -2,7 +2,9 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.db import transaction
 from django.db.models import Count
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic as views
@@ -96,9 +98,9 @@ class TradeIdeasDashboardView(views.ListView):
             queryset = queryset.order_by('-created_at')
         if category:
             queryset = queryset.filter(category=category)
-        if symbol:
+        elif symbol:
             queryset = queryset.filter(symbol=symbol)
-        if search_query:
+        elif search_query:
             queryset = queryset.filter(title__icontains=search_query)
 
 
@@ -123,18 +125,29 @@ class TradeIdeasDashboardView(views.ListView):
 
 
 
-class DeleteTradeIdeaView(views.DeleteView):
+class DeleteTradeIdeaView(auth_mixin.LoginRequiredMixin, auth_mixin.UserPassesTestMixin,views.DeleteView):
     model = TradeIdea
     form_class = DeleteTradeIdeaForm
     template_name = 'trade_ideas/delete_idea.html'
 
-    success_url = reverse_lazy('index')
+    def test_func(self):
+        return self.request.user.groups.filter(name='Content Creator').exists() or self.request.user.is_staff
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         form = self.form_class(instance=self.object)
         context['form'] = form
         return context
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        with transaction.atomic():
+            self.object.delete()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse_lazy('trade ideas dashboard')
 
 
 
