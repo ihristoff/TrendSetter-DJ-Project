@@ -1,4 +1,4 @@
-Django project for educational pupsposes. WebApp with user authentication system, articles, posts, ratings and comments.
+Django project for educational purposes only. WebApp with user authentication system, articles, posts, ratings and comments.
 
 
 ![chrome_nZqZxhI6RW](https://github.com/ihristoff/TrendSetter-DJ-project/assets/91365313/35924dbb-7f2c-4be5-8941-3f0f1ba1129e)
