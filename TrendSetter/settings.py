@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 from django.urls import reverse_lazy
@@ -25,9 +25,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-s$d)=sg_@luyl5nvc&vji@(od^ja2w*9$k(lh7dv%8b$l&fk5k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = os.environ.get('DEBUG,1')
 DEBUG = True
+ALLOWED_HOSTS = []
 
-ALLOWED_HOSTS = [  ]
+
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split(' ')
+CSRF_TRUSTED_ORIGINS = [f'https://{host}' for host in ALLOWED_HOSTS ]
+
 
 
 # Application definition
@@ -96,13 +101,33 @@ WSGI_APPLICATION = 'TrendSetter.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+
+# Local SQLite database for development and testing
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
+    # 'azure_postgresql': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'your_database_name',
+    #     'USER': 'your_database_user',
+    #     'PASSWORD': 'your_database_password',
+    #     'HOST': 'your_database_host',
+    #     'PORT': 'your_database_port',
+    # },
 }
 
+# Use SQLite database for development and testing
+# if DEBUG:
+#     DATABASES['default'] = DATABASES['azure_postgresql']
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
