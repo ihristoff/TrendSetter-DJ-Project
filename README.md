@@ -14,3 +14,4 @@ Django project for educational purposes only. WebApp with user authentication sy
 
 
 keep improving
+keep on going
